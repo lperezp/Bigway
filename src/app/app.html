@@ -1,0 +1,20 @@
+<ion-menu [content]="content">
+  <ion-header class="bgPrimary">
+    <ion-toolbar class="mainAvatar alignCenter bgPrimary">
+      <img class="avatar" src="../assets/imgs/12345678.jpg" />
+      <ion-title>Luis Perez</ion-title>
+      <small>CDI Project</small>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item>Tus viajes</ion-item>
+      <ion-item>Pagos</ion-item>
+      <ion-item>Ayuda</ion-item>
+      <ion-item>Configuración</ion-item>
+      <ion-item>Cerrar sesión</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-nav [root]="rootPage" #content></ion-nav>
