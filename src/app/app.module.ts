@@ -13,6 +13,9 @@ import { StartPage } from "../pages/start/start";
 import { ResetPasswordPage } from "../pages/reset-password/reset-password";
 import { ConfirmPage } from "../pages/confirm/confirm";
 
+//IMPORTAMOS EL GOOGLE MAPS NATIVO
+import { GoogleMaps } from "@ionic-native/google-maps";
+
 @NgModule({
   declarations: [
     MyApp,
@@ -46,6 +49,7 @@ import { ConfirmPage } from "../pages/confirm/confirm";
   providers: [
     StatusBar,
     SplashScreen,
+    GoogleMaps,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
