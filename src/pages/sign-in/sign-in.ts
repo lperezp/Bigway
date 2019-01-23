@@ -30,7 +30,7 @@ export class SignInPage {
   ionViewDidEnter() {
     this.menu.enable(false);
   }
-  backPage() {
+  goToBack() {
     this.navCtrl.pop();
   }
 

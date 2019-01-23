@@ -2,7 +2,6 @@ import { TravelPage } from "./../pages/travel/travel";
 import { SelectedTravelPage } from "./../pages/selected-travel/selected-travel";
 import { PagoPage } from "./../pages/pago/pago";
 import { HelpPage } from "./../pages/help/help";
-import { HeaderFillComponent } from "./../components/header-fill/header-fill";
 import { RegisterPage } from "./../pages/register/register";
 import { SignInPage } from "./../pages/sign-in/sign-in";
 import { BrowserModule } from "@angular/platform-browser";
@@ -25,7 +24,6 @@ import { Geolocation } from "@ionic-native/geolocation";
     StartPage,
     SignInPage,
     RegisterPage,
-    HeaderFillComponent,
     ResetPasswordPage,
     ConfirmPage,
     HelpPage,
@@ -48,7 +46,6 @@ import { Geolocation } from "@ionic-native/geolocation";
     StartPage,
     SignInPage,
     RegisterPage,
-    HeaderFillComponent,
     ResetPasswordPage,
     ConfirmPage,
     HelpPage,

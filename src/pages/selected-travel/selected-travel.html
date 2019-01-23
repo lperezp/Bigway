@@ -1,36 +1,36 @@
-<!--
-  Generated template for the SelectedTravelPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-    <ion-navbar>
-      <button ion-button menuToggle><ion-icon name="arrow-round-back" class="txt-white"></ion-icon></button>
-      <ion-title>Detalle del viaje</ion-title>
-    </ion-navbar>
-  </ion-header>
+  <ion-navbar>
+    <ion-title>
+      <ion-icon name="arrow-round-back" (click)="goToBack()"></ion-icon>
+      Detalle del viaje
+    </ion-title>
+  </ion-navbar>
+</ion-header>
 
 <ion-content padding>
-    <ion-card >
-      <img src="../../assets/imgs/rutas/ruta.JPG" />
-      <ion-card-content class="alignCenter">
-        <ion-grid>
-          <ion-row>
-            <ion-col class="alignLeft">
-              <p class="card-detail">09/01/2019 05:40 p.m.</p>
-              <p class="card-detail">Ford GT90</p>
-            </ion-col>
-            <ion-col class="alignRight">
-                <p class="card-detail">S/. 11.00</p>
-                <p class="card-detail">Efectivo</p>
-            </ion-col>
-            <ion-col col-12 class="alignLeft">
-                <p class="card-detail"><ion-icon name="square"></ion-icon> Av. José Pardo 601</p>
-                <p class="card-detail"><ion-icon name="checkmark-circle"></ion-icon> Av.Larco 888</p>                
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
-    </ion-card>
+  <ion-card>
+    <img src="../../assets/imgs/rutas/ruta.JPG" />
+    <ion-card-content class="alignCenter">
+      <ion-grid>
+        <ion-row>
+          <ion-col class="alignLeft">
+            <p class="card-detail">09/01/2019 05:40 p.m.</p>
+            <p class="card-detail">Ford GT90</p>
+          </ion-col>
+          <ion-col class="alignRight">
+            <p class="card-detail">S/. 11.00</p>
+            <p class="card-detail">Efectivo</p>
+          </ion-col>
+          <ion-col col-12 class="alignLeft">
+            <p class="card-detail">
+              <ion-icon name="square"></ion-icon> Av. José Pardo 601
+            </p>
+            <p class="card-detail">
+              <ion-icon name="checkmark-circle"></ion-icon> Av.Larco 888
+            </p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

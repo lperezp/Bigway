@@ -1,8 +1,5 @@
-import { NgModule } from '@angular/core';
-import { HeaderFillComponent } from './header-fill/header-fill';
+import { NgModule } from "@angular/core";
 @NgModule({
-	declarations: [HeaderFillComponent],
-	imports: [],
-	exports: [HeaderFillComponent]
+  imports: []
 })
 export class ComponentsModule {}

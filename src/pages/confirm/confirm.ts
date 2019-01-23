@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component } from "@angular/core";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
 
 /**
  * Generated class for the ConfirmPage page.
@@ -10,16 +10,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-confirm',
-  templateUrl: 'confirm.html',
+  selector: "page-confirm",
+  templateUrl: "confirm.html"
 })
 export class ConfirmPage {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  goToBack() {
+    this.navCtrl.pop();
   }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ConfirmPage');
-  }
-
 }

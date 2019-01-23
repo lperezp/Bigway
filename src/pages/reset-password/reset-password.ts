@@ -28,4 +28,8 @@ export class ResetPasswordPage {
   ionViewDidEnter() {
     this.menu.enable(false);
   }
+
+  goToBack() {
+    this.navCtrl.pop();
+  }
 }

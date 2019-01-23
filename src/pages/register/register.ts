@@ -1,4 +1,3 @@
-import { HeaderFillComponent } from "./../../components/header-fill/header-fill";
 import { Component } from "@angular/core";
 import {
   IonicPage,
@@ -33,5 +32,9 @@ export class RegisterPage {
 
   openHome() {
     this.navCtrl.push(HomePage);
+  }
+
+  goToBack() {
+    this.navCtrl.pop();
   }
 }

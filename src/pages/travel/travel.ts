@@ -87,4 +87,7 @@ export class TravelPage {
   selectedTravel(event, item) {
     this.navCtrl.push(SelectedTravelPage, { item: item });
   }
+  goToBack() {
+    this.navCtrl.pop();
+  }
 }

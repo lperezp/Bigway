@@ -15,4 +15,8 @@ import { IonicPage, NavController, NavParams } from "ionic-angular";
 })
 export class SelectedTravelPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
+
+  goToBack() {
+    this.navCtrl.pop();
+  }
 }
