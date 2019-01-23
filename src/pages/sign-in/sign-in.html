@@ -11,22 +11,24 @@
   <ion-grid class="alignCenter">
     <ion-row>
       <ion-col>
-        <ion-item class="sinPadding">
-          <ion-label floating>Correo</ion-label>
-          <ion-input type="email"></ion-input>
-          <ion-icon name="person" item-left color="light"></ion-icon>
-        </ion-item>
-        <ion-item class="sinPadding">
-          <ion-label floating>Contraseña</ion-label>
-          <ion-input type="password"></ion-input>
-          <ion-icon name="lock" item-left color="light"></ion-icon>
-        </ion-item>
-        <button ion-button class="btn fullWidth btnForm" (click)="openHome()">
-          Entrar
-        </button>
-        <a class="text-link" color="primary" (click)="openResetPassword()"
-          >Olvidé la contraseña</a
-        >
+        <form [formGroup]="miFormulario">
+          <ion-item class="sinPadding">
+            <ion-label floating>Correo</ion-label>
+            <ion-input formControlName="correo" type="email"></ion-input>
+            <ion-icon name="person" item-left color="light"></ion-icon>
+          </ion-item>
+          <ion-item class="sinPadding">
+            <ion-label floating>Contraseña</ion-label>
+            <ion-input formControlName="clave" type="password"></ion-input>
+            <ion-icon name="lock" item-left color="light"></ion-icon>
+          </ion-item>
+          <button ion-button class="btn fullWidth btnForm" (click)="ingresar()">
+            Entrar
+          </button>
+          <a class="text-link" color="primary" (click)="openResetPassword()"
+            >Olvidé la contraseña</a
+          >
+        </form>
       </ion-col>
     </ion-row>
   </ion-grid>

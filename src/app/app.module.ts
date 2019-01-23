@@ -1,3 +1,4 @@
+import { RestProvider } from "./../providers/rest/rest";
 import { TravelPage } from "./../pages/travel/travel";
 import { SelectedTravelPage } from "./../pages/selected-travel/selected-travel";
 import { PagoPage } from "./../pages/pago/pago";
@@ -16,6 +17,8 @@ import { StartPage } from "../pages/start/start";
 import { ResetPasswordPage } from "../pages/reset-password/reset-password";
 import { ConfirmPage } from "../pages/confirm/confirm";
 import { Geolocation } from "@ionic-native/geolocation";
+import { HttpClientModule } from "@angular/common/http";
+import { HttpModule } from "@angular/http";
 
 @NgModule({
   declarations: [
@@ -33,6 +36,7 @@ import { Geolocation } from "@ionic-native/geolocation";
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp, {
       scrollAssist: true,
       autoFocusAssist: false,
@@ -57,7 +61,9 @@ import { Geolocation } from "@ionic-native/geolocation";
     StatusBar,
     SplashScreen,
     Geolocation,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    RestProvider,
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    RestProvider
   ]
 })
 export class AppModule {}
