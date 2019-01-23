@@ -1,3 +1,7 @@
+import { TravelPage } from "./../pages/travel/travel";
+import { SelectedTravelPage } from "./../pages/selected-travel/selected-travel";
+import { PagoPage } from "./../pages/pago/pago";
+import { HelpPage } from "./../pages/help/help";
 import { HeaderFillComponent } from "./../components/header-fill/header-fill";
 import { RegisterPage } from "./../pages/register/register";
 import { SignInPage } from "./../pages/sign-in/sign-in";
@@ -12,6 +16,7 @@ import { HomePage } from "../pages/home/home";
 import { StartPage } from "../pages/start/start";
 import { ResetPasswordPage } from "../pages/reset-password/reset-password";
 import { ConfirmPage } from "../pages/confirm/confirm";
+import { Geolocation } from "@ionic-native/geolocation";
 
 @NgModule({
   declarations: [
@@ -22,7 +27,11 @@ import { ConfirmPage } from "../pages/confirm/confirm";
     RegisterPage,
     HeaderFillComponent,
     ResetPasswordPage,
-    ConfirmPage
+    ConfirmPage,
+    HelpPage,
+    PagoPage,
+    SelectedTravelPage,
+    TravelPage
   ],
   imports: [
     BrowserModule,
@@ -41,11 +50,16 @@ import { ConfirmPage } from "../pages/confirm/confirm";
     RegisterPage,
     HeaderFillComponent,
     ResetPasswordPage,
-    ConfirmPage
+    ConfirmPage,
+    HelpPage,
+    PagoPage,
+    SelectedTravelPage,
+    TravelPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    Geolocation,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

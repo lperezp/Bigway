@@ -8,11 +8,9 @@
   </ion-header>
   <ion-content>
     <ion-list>
-      <ion-item>Tus viajes</ion-item>
-      <ion-item>Pagos</ion-item>
-      <ion-item>Ayuda</ion-item>
-      <ion-item>Configuración</ion-item>
-      <ion-item>Cerrar sesión</ion-item>
+      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        {{ p.title }}
+      </button>
     </ion-list>
   </ion-content>
 </ion-menu>

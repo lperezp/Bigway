@@ -1,5 +1,7 @@
 {
   "name": "bigway",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }

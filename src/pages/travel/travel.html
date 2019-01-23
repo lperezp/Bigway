@@ -1,0 +1,37 @@
+<!--
+  Generated template for the TravelPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle><ion-icon name="arrow-round-back" class="txt-white"></ion-icon></button>
+    <ion-title>Tus viajes</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="bg-gris">
+  <button
+      *ngFor="let _travel of _travels"
+      (click)="selectedTravel($event, item)"
+    >
+  <ion-card >
+      <img src="../../assets/imgs/rutas/ruta.JPG" />
+      <ion-card-content class="alignCenter">
+        <ion-grid>
+          <ion-row>
+            <ion-col class="alignLeft"col-8>
+              <p class="card-detail">{{ _travel.datetime }}</p>
+              <p class="card-detail">{{ _travel.vehiculo }}</p>
+            </ion-col>
+            <ion-col class="alignRight" col-4>
+                <p class="card-detail">S/. {{ _travel.precio }}</p>
+                <p class="card-detail">{{ _travel.modoPago }} </p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </button>
+</ion-content>
