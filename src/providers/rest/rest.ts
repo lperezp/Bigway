@@ -43,11 +43,10 @@ export class RestProvider {
         );
     });
   } */
-
   validarUser(data) {
     return new Promise((resolve, reject) => {
       let headers = new HttpHeaders();
-      headers = headers.set("Content-Type", "application/json; charset=utf-8");
+      headers = headers.set("Content-Type", "application/json;charset = utf-8");
       this.http
         .post(this.rutaLogin, JSON.stringify(data), { headers })
         .subscribe(

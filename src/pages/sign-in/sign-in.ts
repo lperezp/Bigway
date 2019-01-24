@@ -13,8 +13,10 @@ import {
   FormControl,
   Validators,
   FormGroup,
-  FormBuilder
+  FormBuilder,
+  DefaultValueAccessor
 } from "@angular/forms";
+import { ResponseOptions } from "@angular/http";
 
 /**
  * Generated class for the SignInPage page.
@@ -45,7 +47,7 @@ export class SignInPage {
         "",
         Validators.compose([Validators.required, Validators.email])
       ),
-      clave: new FormControl("", Validators.required)
+      clave: new FormControl("")
     });
   }
   ionViewDidEnter() {
@@ -59,13 +61,6 @@ export class SignInPage {
     this.navCtrl.push(ResetPasswordPage);
   }
 
-  validarUser() {
-    /* console.log(this.miFormulario.value); */
-    this.user = this.miFormulario.value;
-    /* console.log("hola", this.user); */
-    this.restProvider.validarUser(this.user);
-  }
-
   ingresar() {
     if (!this.miFormulario.valid) {
       console.log("Error!");
@@ -73,5 +68,27 @@ export class SignInPage {
       /* console.log("Eureka!"); */
       this.validarUser();
     }
+  }
+
+  validarUser() {
+    this.user = this.miFormulario.value;
+    this.restProvider.validarUser(this.user).then(respuesta => {
+      console.log("RESPUESTA DEL SERVIDOR", respuesta);
+      let _correo = respuesta["correo"];
+      let _clave = respuesta["clave"];
+      /* console.log(this.user);
+      console.log("VARIABLES LOCALES", this.user["correo"]);
+      console.log("VARIABLES LOCALES", this.user["clave"]);
+      console.log("VARIABLES DEL SERVIDOR", _clave);
+      console.log("VARIABLES DEL SERVIDOR", _correo);*/
+      if (_correo === this.user["correo"]) {
+        this.navCtrl.push(HomePage);
+        console.log("Bienvenido!");
+      } else {
+        console.log("Usuario incorrecto.");
+      }
+    });
+
+    /* this.navCtrl.push(HomePage); */
   }
 }
