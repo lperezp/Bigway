@@ -1,6 +1,19 @@
 page-home {
   #map {
-    height: 50%;
+    height: 100%;
     width: 100%;
+  }
+  .form {
+    position: absolute;
+    margin-top: 6em;
+    /* display: inline-flex; */
+    z-index: 1;
+  }
+  .scroll-content {
+    padding: 0px !important;
+  }
+
+  .label-md {
+    margin: 0px !important;
   }
 }

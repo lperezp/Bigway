@@ -19,6 +19,8 @@ export class HomePage {
   geocoder: any;
   markers: any;
   myMarker: any;
+  directionsService: any;
+  directionsRenderer: any;
   constructor(
     public navCtrl: NavController,
     private zone: NgZone,
@@ -30,6 +32,8 @@ export class HomePage {
     this.autocompleteItems = [];
     this.geocoder = new google.maps.Geocoder();
     this.markers = [];
+    this.directionsService = new google.maps.DirectionsService();
+    this.directionsRenderer = new google.maps.DirectionsRenderer();
   }
   ionViewDidEnter() {
     this.menu.enable(true);
@@ -39,7 +43,7 @@ export class HomePage {
     /*  this.initTodo(); */
     this.initMap();
     this.tryGeolocation();
-    this.timeReal();
+    /* this.timeReal(); */
   }
 
   /*  initTodo(){
@@ -226,4 +230,25 @@ export class HomePage {
     });
     this.deleteMarker();
   }
+
+  /* calcularRuta() {
+    this.geolocation.getCurrentPosition().then(resp => {
+        let pos = {
+          lat: resp.coords.latitude,
+          lng: resp.coords.longitude
+          this.directionsService.route({
+            origin: pos, //AQUI VA EL ORIGEN -> PUNTO ACTUAL
+            destination: "san bernardino, ca",
+            travelMode: "DRIVING"
+          },
+            function (response, status) {
+              if (status === "OK") {
+                this.directionDisplay.setDirections(response);
+              } else {
+                console.log("Falló la respuesta de dirección: ", status);
+              };
+            })
+    }
+  });
+} */
 }

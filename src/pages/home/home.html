@@ -2,5 +2,33 @@
   <button ion-button menuToggle class="btnFloat btnCircle btn">
     <ion-icon name="menu"></ion-icon>
   </button>
+  <ion-grid class="form">
+    <ion-row>
+      <ion-col>
+        <ion-item class="sinPadding">
+          <ion-input type="text" placeholder="Ubicación actual"></ion-input>
+          <ion-icon name="locate" color="dark" item-right></ion-icon>
+        </ion-item>
+        <ion-item class="sinPadding">
+          <ion-searchbar
+            [(ngModel)]="autocomplete.input"
+            (ionInput)="updateSearchResults()"
+            placeholder="¿A dónde vas?"
+            class="sinPadding"
+          ></ion-searchbar>
+          <ion-list [hidden]="autocompleteItems.length == 0">
+            <ion-item
+              *ngFor="let item of autocompleteItems"
+              tappable
+              (click)="selectSearchResult(item)"
+            >
+              {{ item.description }}
+            </ion-item>
+          </ion-list>
+        </ion-item>
+        <!--  <button ion-button (click)="calcularRuta()">Test</button> -->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <div #map id="map"></div>
 </ion-content>
