@@ -2,8 +2,7 @@ import { Geolocation } from "@ionic-native/geolocation";
 import { Component, NgZone, ViewChild } from "@angular/core";
 import { NavController, MenuController } from "ionic-angular";
 import {} from "googlemaps";
-import { analyzeAndValidateNgModules } from "@angular/compiler";
-/* declare var geoXML3; */
+import { removeDebugNodeFromIndex } from "@angular/core/src/debug/debug_node";
 
 @Component({
   selector: "page-home",
@@ -12,7 +11,7 @@ import { analyzeAndValidateNgModules } from "@angular/compiler";
 export class HomePage {
   @ViewChild("map") mapElement;
   google: any;
-  map: any;
+  public map: any;
   GoogleAutocomplete: any;
   autocomplete: any;
   autocompleteItems: any;
@@ -20,7 +19,7 @@ export class HomePage {
   markers: any;
   myMarker: any;
   directionsService: any;
-  directionsRenderer: any;
+  directionsDisplay: any;
   constructor(
     public navCtrl: NavController,
     private zone: NgZone,
@@ -33,7 +32,7 @@ export class HomePage {
     this.geocoder = new google.maps.Geocoder();
     this.markers = [];
     this.directionsService = new google.maps.DirectionsService();
-    this.directionsRenderer = new google.maps.DirectionsRenderer();
+    this.directionsDisplay = new google.maps.DirectionsRenderer();
   }
   ionViewDidEnter() {
     this.menu.enable(true);
@@ -170,6 +169,7 @@ export class HomePage {
     this.autocompleteItems = [];
 
     this.geocoder.geocode({ placeId: item.place_id }, (results, status) => {
+      console.log("item:", item.description);
       if (status === "OK" && results[0]) {
         let position = {
           lat: results[0].geometry.location.lat,
@@ -183,7 +183,6 @@ export class HomePage {
 
         this.markers.push(marker);
         this.map.setCenter(results[0].geometry.location);
-        console.log(results[0].geometry.location);
       }
     });
   }
@@ -201,14 +200,14 @@ export class HomePage {
           lng: resp.coords.longitude
         };
 
-        let marker = new google.maps.Marker({
+        /*  let marker = new google.maps.Marker({
           position: pos,
           draggable: true,
           map: this.map,
           title: "Estas aqui!"
         });
 
-        this.markers.push(marker);
+        this.markers.push(marker); */
         this.map.setCenter(pos);
       })
       .catch(error => {
@@ -231,24 +230,55 @@ export class HomePage {
     this.deleteMarker();
   }
 
-  /* calcularRuta() {
+  calcularRutas() {
     this.geolocation.getCurrentPosition().then(resp => {
-        let pos = {
-          lat: resp.coords.latitude,
-          lng: resp.coords.longitude
-          this.directionsService.route({
-            origin: pos, //AQUI VA EL ORIGEN -> PUNTO ACTUAL
-            destination: "san bernardino, ca",
-            travelMode: "DRIVING"
-          },
-            function (response, status) {
-              if (status === "OK") {
-                this.directionDisplay.setDirections(response);
-              } else {
-                console.log("Falló la respuesta de dirección: ", status);
-              };
-            })
-    }
-  });
-} */
+      let pos = {
+        lat: resp.coords.latitude,
+        lng: resp.coords.longitude
+      };
+      this.directionsService.route(
+        {
+          origin: "Av Jose Larco 880, Miraflores, Perú", //AQUI VA EL ORIGEN -> PUNTO ACTUAL
+          destination: "Estación 28 de Julio, Cercado de Lima, Perú",
+          travelMode: "DRIVING"
+        },
+        function(response, status) {
+          /* if (status === "OK") {
+            this.directionDisplay.setDirections(response);
+          } else {
+            console.log("Falló la respuesta de dirección: ", status);
+          } */
+          console.log(response);
+        }
+      );
+    });
+  }
+  calcularRuta() {
+    this.directionsService = new google.maps.DirectionsService();
+    this.geolocation.getCurrentPosition().then(resp => {
+      let pos = {
+        lat: resp.coords.latitude,
+        lng: resp.coords.longitude
+      };
+      let request = {
+        origin: this.map.getCenter(), //AQUI VA EL ORIGEN -> PUNTO ACTUAL
+        destination: "SODIMAC - Jockey Plaza, Santiago de Surco, Perú",
+        travelMode: "DRIVING"
+      };
+      this.directionsService.route(request, (result, status) => {
+        this.directionsDisplay = new google.maps.DirectionsRenderer();
+        if (status == "OK") {
+          console.log(result);
+          this.directionsDisplay.setDirections(result);
+          this.directionsDisplay.setMap(this.map);
+          this.directionsDisplay.setOptions({
+            suppressMarkers: true,
+            polylineOptions: {
+              strokeColor: "#13937b"
+            }
+          });
+        }
+      });
+    });
+  }
 }

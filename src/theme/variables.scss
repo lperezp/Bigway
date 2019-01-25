@@ -100,6 +100,24 @@ $colors: (
   margin-top: 25vh !important;
 }
 
+.markerFalse {
+  width: 31px;
+  height: 51px;
+  position: absolute;
+}
+
+.divMarker {
+  z-index: 3;
+  width: 31px;
+  height: 51px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -15%;
+  margin-left: -8.8%;
+  align-items: center;
+  justify-content: center;
+}
 /* ++BACKGROUND++ */
 .bgPrimary {
   background-color: #11997e;
