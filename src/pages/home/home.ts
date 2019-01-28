@@ -3,6 +3,9 @@ import { Component, NgZone, ViewChild } from "@angular/core";
 import { NavController, MenuController } from "ionic-angular";
 import {} from "googlemaps";
 
+// DECLARAMOS LA VARIABLE geoXML3 QUE SE IMPORTA EN EL INDEX
+declare var geoXML3;
+
 @Component({
   selector: "page-home",
   templateUrl: "home.html"
@@ -20,6 +23,9 @@ export class HomePage {
   directionsDisplay: any;
   puntoB: string;
   puntoA: string;
+  myParser: any;
+  rr: any;
+
   @ViewChild("map") mapElement;
   constructor(
     public navCtrl: NavController,
@@ -41,7 +47,7 @@ export class HomePage {
   ngOnInit() {
     this.initMap();
   }
-
+  // METODO QUE INICIA EL MAPA
   initMap() {
     /* ARRANCA EL MAPA CON LA BUSQUEDA DE POSICION
     INMEDIATA Y LUEGO LA MUESTRA EN PANTALLA*/
@@ -145,6 +151,11 @@ export class HomePage {
           this.mapElement.nativeElement,
           mapOptions
         );
+        /* this.myParser = new geoXML3.parser({
+          map: this.map,
+          zoom: false
+        });
+        this.myParser.parse("../../assets/kml/map_bit_way_taxi.kml"); */
         this.selectStart();
         google.maps.event.addListener(this.map, "dragend", () => {
           this.geocoder.geocode(
@@ -152,7 +163,7 @@ export class HomePage {
             (result, status) => {
               if (status == "OK" && result[0]) {
                 console.log(
-                  "Direccion de tu marcador:",
+                  "Direccion de tu marcador actual:",
                   result[0].formatted_address
                 );
                 this.puntoA = result[0].formatted_address;
@@ -166,6 +177,7 @@ export class HomePage {
       });
   }
 
+  // METODO QUE ACTUALIZA LOS RESULTADOS DE BUSQUEDA
   updateSearchResults() {
     if (this.autocomplete.input == "") {
       this.autocompleteItems = [];
@@ -185,12 +197,14 @@ export class HomePage {
     );
   }
 
+  // METODO QUE SE REALIZA AL SELECCIONAR UN LUGAR
   selectSearchResult(item) {
     this.deleteMarker();
     this.autocompleteItems = [];
 
     this.geocoder.geocode({ placeId: item.place_id }, (results, status) => {
-      console.log("item:", item.description);
+      console.log("Punto B:", item.description);
+
       if (status === "OK" && results[0]) {
         this.calcularRuta(results[0].geometry.location);
         //completar el input según tu búsqueda
@@ -201,6 +215,7 @@ export class HomePage {
     });
   }
 
+  // METODO QUE CALCULA LA RUTA DEL PUNTO A AL PUNTO B
   calcularRuta(destino: any) {
     let request = {
       origin: this.map.getCenter(),
@@ -209,6 +224,7 @@ export class HomePage {
     }; //AQUI VA EL ORIGEN -> PUNTO ACTUAL
     this.directionsService.route(request, (result, status) => {
       this.directionsDisplay = new google.maps.DirectionsRenderer();
+
       if (status == "OK") {
         console.log(result);
         this.directionsDisplay.setDirections(result);
@@ -223,10 +239,10 @@ export class HomePage {
     });
   }
 
-  deleteMarker() {
-    //funcion que elimina Marker, es un metodo de Google Maps
-  }
+  // METODO QUE LIMPIA EL MAPA
+  deleteMarker() {}
 
+  // METODO QUE IMPRIME LA UBICACIÓN DEL MARCADOR CENTRAL
   selectStart() {
     this.geocoder.geocode(
       { location: this.map.getCenter() },
@@ -237,5 +253,9 @@ export class HomePage {
         }
       }
     );
+  }
+
+  calcularTarifa() {
+    this.rr = new geoXML3.parser();
   }
 }
