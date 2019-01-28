@@ -2,14 +2,12 @@ import { Geolocation } from "@ionic-native/geolocation";
 import { Component, NgZone, ViewChild } from "@angular/core";
 import { NavController, MenuController } from "ionic-angular";
 import {} from "googlemaps";
-import { removeDebugNodeFromIndex } from "@angular/core/src/debug/debug_node";
 
 @Component({
   selector: "page-home",
   templateUrl: "home.html"
 })
 export class HomePage {
-  @ViewChild("map") mapElement;
   google: any;
   public map: any;
   GoogleAutocomplete: any;
@@ -20,6 +18,9 @@ export class HomePage {
   myMarker: any;
   directionsService: any;
   directionsDisplay: any;
+  puntoB: string;
+  puntoA: string;
+  @ViewChild("map") mapElement;
   constructor(
     public navCtrl: NavController,
     private zone: NgZone,
@@ -32,117 +33,137 @@ export class HomePage {
     this.geocoder = new google.maps.Geocoder();
     this.markers = [];
     this.directionsService = new google.maps.DirectionsService();
-    this.directionsDisplay = new google.maps.DirectionsRenderer();
   }
   ionViewDidEnter() {
     this.menu.enable(true);
   }
 
   ngOnInit() {
-    /*  this.initTodo(); */
     this.initMap();
-    this.tryGeolocation();
-    /* this.timeReal(); */
   }
 
-  /*  initTodo(){
-     let setMap;
-       let myParser = new geoXML3.parser({ map: this.map });
-       myParser.parse(
-         "http://www.desarrollo-lp.byethost16.com/map_bit_way_taxi.kml"
-       );
-   } */
-
   initMap() {
-    let coords = new google.maps.LatLng(-12.046374, -77.0427934);
-    let mapOptions: google.maps.MapOptions = {
-      center: coords,
-      zoom: 17,
-      mapTypeControl: false,
-      zoomControl: false,
-      scaleControl: false,
-      fullscreenControl: false,
-      streetViewControl: false,
-      mapTypeId: google.maps.MapTypeId.ROADMAP /* INICIO DEL STYLE */,
-      styles: [
-        { elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
-        { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
-        { elementType: "labels.text.fill", stylers: [{ color: "#616161" }] },
-        { elementType: "labels.text.stroke", stylers: [{ color: "#f5f5f5" }] },
-        {
-          featureType: "administrative.land_parcel",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#bdbdbd" }]
-        },
-        {
-          featureType: "poi",
-          elementType: "geometry",
-          stylers: [{ color: "#eeeeee" }]
-        },
-        {
-          featureType: "poi",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#757575" }]
-        },
-        {
-          featureType: "poi.park",
-          elementType: "geometry",
-          stylers: [{ color: "#e5e5e5" }]
-        },
-        {
-          featureType: "poi.park",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#9e9e9e" }]
-        },
-        {
-          featureType: "road",
-          elementType: "geometry",
-          stylers: [{ color: "#ffffff" }]
-        },
-        {
-          featureType: "road.arterial",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#757575" }]
-        },
-        {
-          featureType: "road.highway",
-          elementType: "geometry",
-          stylers: [{ color: "#dadada" }]
-        },
-        {
-          featureType: "road.highway",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#616161" }]
-        },
-        {
-          featureType: "road.local",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#9e9e9e" }]
-        },
-        {
-          featureType: "transit.line",
-          elementType: "geometry",
-          stylers: [{ color: "#e5e5e5" }]
-        },
-        {
-          featureType: "transit.station",
-          elementType: "geometry",
-          stylers: [{ color: "#eeeeee" }]
-        },
-        {
-          featureType: "water",
-          elementType: "geometry",
-          stylers: [{ color: "#c9c9c9" }]
-        },
-        {
-          featureType: "water",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#9e9e9e" }]
-        }
-      ]
-    }; /* FIN DEL STYLE */
-
-    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    /* ARRANCA EL MAPA CON LA BUSQUEDA DE POSICION
+    INMEDIATA Y LUEGO LA MUESTRA EN PANTALLA*/
+    this.geolocation
+      .getCurrentPosition()
+      .then(resp => {
+        let pos = { lat: resp.coords.latitude, lng: resp.coords.longitude };
+        let mapOptions: google.maps.MapOptions = {
+          center: pos,
+          zoom: 18,
+          mapTypeControl: false,
+          zoomControl: false,
+          scaleControl: false,
+          fullscreenControl: false,
+          streetViewControl: false,
+          mapTypeId: google.maps.MapTypeId.ROADMAP /* INICIO DEL STYLE */,
+          styles: [
+            { elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
+            { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+            {
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#616161" }]
+            },
+            {
+              elementType: "labels.text.stroke",
+              stylers: [{ color: "#f5f5f5" }]
+            },
+            {
+              featureType: "administrative.land_parcel",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#bdbdbd" }]
+            },
+            {
+              featureType: "poi",
+              elementType: "geometry",
+              stylers: [{ color: "#eeeeee" }]
+            },
+            {
+              featureType: "poi",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#757575" }]
+            },
+            {
+              featureType: "poi.park",
+              elementType: "geometry",
+              stylers: [{ color: "#e5e5e5" }]
+            },
+            {
+              featureType: "poi.park",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#9e9e9e" }]
+            },
+            {
+              featureType: "road",
+              elementType: "geometry",
+              stylers: [{ color: "#ffffff" }]
+            },
+            {
+              featureType: "road.arterial",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#757575" }]
+            },
+            {
+              featureType: "road.highway",
+              elementType: "geometry",
+              stylers: [{ color: "#dadada" }]
+            },
+            {
+              featureType: "road.highway",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#616161" }]
+            },
+            {
+              featureType: "road.local",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#9e9e9e" }]
+            },
+            {
+              featureType: "transit.line",
+              elementType: "geometry",
+              stylers: [{ color: "#e5e5e5" }]
+            },
+            {
+              featureType: "transit.station",
+              elementType: "geometry",
+              stylers: [{ color: "#eeeeee" }]
+            },
+            {
+              featureType: "water",
+              elementType: "geometry",
+              stylers: [{ color: "#c9c9c9" }]
+            },
+            {
+              featureType: "water",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#9e9e9e" }]
+            }
+          ]
+        }; /* FIN DEL STYLE */
+        this.map = new google.maps.Map(
+          this.mapElement.nativeElement,
+          mapOptions
+        );
+        this.selectStart();
+        google.maps.event.addListener(this.map, "dragend", () => {
+          this.geocoder.geocode(
+            { location: this.map.getCenter() },
+            (result, status) => {
+              if (status == "OK" && result[0]) {
+                console.log(
+                  "Direccion de tu marcador:",
+                  result[0].formatted_address
+                );
+                this.puntoA = result[0].formatted_address;
+              }
+            }
+          );
+        });
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
 
   updateSearchResults() {
@@ -171,114 +192,50 @@ export class HomePage {
     this.geocoder.geocode({ placeId: item.place_id }, (results, status) => {
       console.log("item:", item.description);
       if (status === "OK" && results[0]) {
-        let position = {
-          lat: results[0].geometry.location.lat,
-          lng: results[0].geometry.location.lng
-        };
+        this.calcularRuta(results[0].geometry.location);
+        //completar el input según tu búsqueda
+        this.autocomplete.input = item.description;
+      } else {
+        console.log("Error al ubicar el destino.");
+      }
+    });
+  }
 
-        let marker = new google.maps.Marker({
-          position: results[0].geometry.location,
-          map: this.map
+  calcularRuta(destino: any) {
+    let request = {
+      origin: this.map.getCenter(),
+      destination: destino,
+      travelMode: "DRIVING"
+    }; //AQUI VA EL ORIGEN -> PUNTO ACTUAL
+    this.directionsService.route(request, (result, status) => {
+      this.directionsDisplay = new google.maps.DirectionsRenderer();
+      if (status == "OK") {
+        console.log(result);
+        this.directionsDisplay.setDirections(result);
+        this.directionsDisplay.setMap(this.map);
+        this.directionsDisplay.setOptions({
+          suppressMarkers: true,
+          polylineOptions: {
+            strokeColor: "#13937b"
+          }
         });
-
-        this.markers.push(marker);
-        this.map.setCenter(results[0].geometry.location);
       }
     });
   }
 
   deleteMarker() {
-    this.markers = [];
+    //funcion que elimina Marker, es un metodo de Google Maps
   }
 
-  tryGeolocation() {
-    this.geolocation
-      .getCurrentPosition()
-      .then(resp => {
-        let pos = {
-          lat: resp.coords.latitude,
-          lng: resp.coords.longitude
-        };
-
-        /*  let marker = new google.maps.Marker({
-          position: pos,
-          draggable: true,
-          map: this.map,
-          title: "Estas aqui!"
-        });
-
-        this.markers.push(marker); */
-        this.map.setCenter(pos);
-      })
-      .catch(error => {
-        console.log("Error al obtener la ubicación", error);
-      });
-  }
-
-  timeReal() {
-    this.geolocation.watchPosition().subscribe(position => {
-      console.log(position.coords.longitude + " " + position.coords.latitude);
-      console.log("hola", position);
-      let latitud = position.coords.latitude;
-      let longitud = position.coords.longitude;
-      let coords = new google.maps.LatLng(latitud, longitud);
-      let marker = new google.maps.Marker({
-        position: coords,
-        map: this.map
-      });
-    });
-    this.deleteMarker();
-  }
-
-  calcularRutas() {
-    this.geolocation.getCurrentPosition().then(resp => {
-      let pos = {
-        lat: resp.coords.latitude,
-        lng: resp.coords.longitude
-      };
-      this.directionsService.route(
-        {
-          origin: "Av Jose Larco 880, Miraflores, Perú", //AQUI VA EL ORIGEN -> PUNTO ACTUAL
-          destination: "Estación 28 de Julio, Cercado de Lima, Perú",
-          travelMode: "DRIVING"
-        },
-        function(response, status) {
-          /* if (status === "OK") {
-            this.directionDisplay.setDirections(response);
-          } else {
-            console.log("Falló la respuesta de dirección: ", status);
-          } */
-          console.log(response);
+  selectStart() {
+    this.geocoder.geocode(
+      { location: this.map.getCenter() },
+      (result, status) => {
+        if (status == "OK" && result[0]) {
+          console.log("Direccion de tu marcador:", result[0].formatted_address);
+          this.puntoA = result[0].formatted_address;
         }
-      );
-    });
-  }
-  calcularRuta() {
-    this.directionsService = new google.maps.DirectionsService();
-    this.geolocation.getCurrentPosition().then(resp => {
-      let pos = {
-        lat: resp.coords.latitude,
-        lng: resp.coords.longitude
-      };
-      let request = {
-        origin: this.map.getCenter(), //AQUI VA EL ORIGEN -> PUNTO ACTUAL
-        destination: "SODIMAC - Jockey Plaza, Santiago de Surco, Perú",
-        travelMode: "DRIVING"
-      };
-      this.directionsService.route(request, (result, status) => {
-        this.directionsDisplay = new google.maps.DirectionsRenderer();
-        if (status == "OK") {
-          console.log(result);
-          this.directionsDisplay.setDirections(result);
-          this.directionsDisplay.setMap(this.map);
-          this.directionsDisplay.setOptions({
-            suppressMarkers: true,
-            polylineOptions: {
-              strokeColor: "#13937b"
-            }
-          });
-        }
-      });
-    });
+      }
+    );
   }
 }

@@ -1,24 +1,28 @@
+<div class="divMarker alignCenter">
+  <img src="../../assets/imgs/start.png" class="markerFalse" />
+</div>
 <ion-content padding>
-  <div class="divMarker alignCenter fullWidth">
-    <img src="../../assets/imgs/start.png" class="markerFalse" />
-  </div>
   <button ion-button menuToggle class="btnFloat btnCircle btn">
     <ion-icon name="menu"></ion-icon>
   </button>
   <ion-grid class="form">
     <ion-row>
       <ion-col>
-        <!-- <ion-item class="sinPadding">
-          <ion-input type="text" placeholder="Ubicación actual"></ion-input>
-          <ion-icon name="locate" color="dark" item-right></ion-icon>
-        </ion-item> -->
+        <ion-item class="sinPadding">
+          <ion-input
+            type="text"
+            placeholder="Ubicación actual"
+            [(ngModel)]="puntoA"
+            (ionChange)="selectStart()"
+          ></ion-input>
+          <!--           <ion-icon name="locate" color="dark" item-right></ion-icon> -->
+        </ion-item>
         <ion-item class="sinPadding">
           <ion-searchbar
             [(ngModel)]="autocomplete.input"
             (ionInput)="updateSearchResults()"
             placeholder="¿A dónde vas?"
             class="sinPadding"
-            (ionChange)="updateSearchResults()"
           ></ion-searchbar>
           <ion-list [hidden]="autocompleteItems.length == 0">
             <ion-item
@@ -30,7 +34,7 @@
             </ion-item>
           </ion-list>
         </ion-item>
-        <button ion-button (click)="calcularRuta()">Test</button>
+        <!-- <button ion-button (click)="calcularRuta()">Test</button> -->
       </ion-col>
     </ion-row>
   </ion-grid>
