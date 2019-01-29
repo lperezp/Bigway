@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title
+      ><ion-icon name="arrow-round-back" (click)="goToBack()"></ion-icon>
+      Detalles del viaje</ion-title
+    >
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+    <ion-card-content class="alignCenter">
+      <ion-grid>
+        <ion-row>
+          <ion-col class="alignLeft">
+            <p class="card-detail">Precio</p>
+            <p class="card-detail">Modalidad de pago</p>
+            <p class="card-detail">Tiempo estimado del viaje</p>
+          </ion-col>
+          <ion-col class="alignRight">
+            <p class="card-detail">S/. 11.00</p>
+            <p class="card-detail">Efectivo</p>
+            <p class="card-detail">55 min</p>
+          </ion-col>
+          <ion-col col-12 class="alignLeft">
+            <p class="card-detail">
+              <ion-icon name="square" color="danger"></ion-icon> Punto A
+            </p>
+            <p class="card-detail">
+              <ion-icon name="checkmark-circle" color="primary"></ion-icon>
+              Punto B
+            </p>
+            <button ion-button color="primary" class="fullWidth">
+              Confirmar viaje
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

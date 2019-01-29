@@ -1,3 +1,4 @@
+import { TarifaPage } from "./../tarifa/tarifa";
 import { Geolocation } from "@ionic-native/geolocation";
 import { Component, NgZone, ViewChild } from "@angular/core";
 import { NavController, MenuController } from "ionic-angular";
@@ -25,7 +26,8 @@ export class HomePage {
   puntoA: string;
   myParser: any;
   rr: any;
-
+  marker: boolean;
+  trf: boolean;
   @ViewChild("map") mapElement;
   constructor(
     public navCtrl: NavController,
@@ -39,6 +41,8 @@ export class HomePage {
     this.geocoder = new google.maps.Geocoder();
     this.markers = [];
     this.directionsService = new google.maps.DirectionsService();
+    this.marker = true;
+    this.trf = false;
   }
   ionViewDidEnter() {
     this.menu.enable(true);
@@ -151,11 +155,22 @@ export class HomePage {
           this.mapElement.nativeElement,
           mapOptions
         );
-        /* this.myParser = new geoXML3.parser({
-          map: this.map,
-          zoom: false
+
+        /* 
+       USO DE GEOJSON EN EL MAPA
+       this.map.data.loadGeoJson(
+          "https://development-lperezp.000webhostapp.com/map_bit_way_taxi.geojson"
+        );
+        this.map.data.setStyle({
+          /* fillColor: "red",
+          strokeWeight: 1, 
+          visible: true  -> ESTO OCULTA LOS POLÍGONOS 
         });
-        this.myParser.parse("../../assets/kml/map_bit_way_taxi.kml"); */
+
+        this.map.data.addListener("mouseover", function(event) {
+          console.log("Tu zona es", event.feature.l.Name);
+        });
+        */
         this.selectStart();
         google.maps.event.addListener(this.map, "dragend", () => {
           this.geocoder.geocode(
@@ -206,6 +221,8 @@ export class HomePage {
       console.log("Punto B:", item.description);
 
       if (status === "OK" && results[0]) {
+        this.marker = false;
+        this.trf = true;
         this.calcularRuta(results[0].geometry.location);
         //completar el input según tu búsqueda
         this.autocomplete.input = item.description;
@@ -230,7 +247,7 @@ export class HomePage {
         this.directionsDisplay.setDirections(result);
         this.directionsDisplay.setMap(this.map);
         this.directionsDisplay.setOptions({
-          suppressMarkers: true,
+          suppressMarkers: false,
           polylineOptions: {
             strokeColor: "#13937b"
           }
@@ -256,6 +273,6 @@ export class HomePage {
   }
 
   calcularTarifa() {
-    this.rr = new geoXML3.parser();
+    this.navCtrl.push(TarifaPage);
   }
 }

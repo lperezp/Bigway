@@ -1,44 +1,45 @@
-<div class="divMarker alignCenter">
+<div class="divMarker alignCenter" *ngIf="marker">
   <img src="../../assets/imgs/start.png" class="markerFalse" />
 </div>
+<ion-grid class="form">
+  <ion-row>
+    <ion-col>
+      <ion-item class="sinPadding">
+        <ion-input
+          type="text"
+          placeholder="Ubicación actual"
+          [(ngModel)]="puntoA"
+          (ionChange)="selectStart()"
+        ></ion-input>
+        <!--           <ion-icon name="locate" color="dark" item-right></ion-icon> -->
+      </ion-item>
+      <ion-item class="sinPadding">
+        <ion-searchbar
+          [(ngModel)]="autocomplete.input"
+          (ionInput)="updateSearchResults()"
+          placeholder="¿A dónde vas?"
+          class="sinPadding"
+        ></ion-searchbar>
+        <ion-list [hidden]="autocompleteItems.length == 0">
+          <ion-item
+            *ngFor="let item of autocompleteItems"
+            tappable
+            (click)="selectSearchResult(item)"
+          >
+            {{ item.description }}
+          </ion-item>
+        </ion-list>
+      </ion-item>
+      <button ion-button (click)="calcularTarifa()" id="boton" *ngIf="trf">
+        Ver Tarifa
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
 <ion-content padding>
   <button ion-button menuToggle class="btnFloat btnCircle btn">
     <ion-icon name="menu"></ion-icon>
   </button>
-  <ion-grid class="form">
-    <ion-row>
-      <ion-col>
-        <ion-item class="sinPadding">
-          <ion-input
-            type="text"
-            placeholder="Ubicación actual"
-            [(ngModel)]="puntoA"
-            (ionChange)="selectStart()"
-          ></ion-input>
-          <!--           <ion-icon name="locate" color="dark" item-right></ion-icon> -->
-        </ion-item>
-        <ion-item class="sinPadding">
-          <ion-searchbar
-            [(ngModel)]="autocomplete.input"
-            (ionInput)="updateSearchResults()"
-            placeholder="¿A dónde vas?"
-            class="sinPadding"
-          ></ion-searchbar>
-          <ion-list [hidden]="autocompleteItems.length == 0">
-            <ion-item
-              *ngFor="let item of autocompleteItems"
-              tappable
-              (click)="selectSearchResult(item)"
-            >
-              {{ item.description }}
-            </ion-item>
-          </ion-list>
-        </ion-item>
-        <button ion-button (click)="calcularTarifa()" id="boton">
-          Ver Zona
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+
   <div #map id="map"></div>
 </ion-content>

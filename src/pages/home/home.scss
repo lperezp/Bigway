@@ -7,7 +7,7 @@ page-home {
     position: absolute;
     margin-top: 6em;
     /* display: inline-flex; */
-    z-index: 1;
+    z-index: 99 !important;
   }
   .scroll-content {
     padding: 0px !important;

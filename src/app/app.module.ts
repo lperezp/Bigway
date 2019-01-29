@@ -1,3 +1,4 @@
+import { TarifaPage } from "./../pages/tarifa/tarifa";
 import { RestProvider } from "./../providers/rest/rest";
 import { TravelPage } from "./../pages/travel/travel";
 import { SelectedTravelPage } from "./../pages/selected-travel/selected-travel";
@@ -32,7 +33,8 @@ import { HttpModule } from "@angular/http";
     HelpPage,
     PagoPage,
     SelectedTravelPage,
-    TravelPage
+    TravelPage,
+    TarifaPage
   ],
   imports: [
     BrowserModule,
@@ -55,7 +57,8 @@ import { HttpModule } from "@angular/http";
     HelpPage,
     PagoPage,
     SelectedTravelPage,
-    TravelPage
+    TravelPage,
+    TarifaPage
   ],
   providers: [
     StatusBar,

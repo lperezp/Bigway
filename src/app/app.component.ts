@@ -1,3 +1,4 @@
+import { TarifaPage } from "./../pages/tarifa/tarifa";
 import { HomePage } from "./../pages/home/home";
 import { StartPage } from "./../pages/start/start";
 import { Component, ViewChild } from "@angular/core";
