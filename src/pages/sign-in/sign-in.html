@@ -22,7 +22,12 @@
             <ion-input formControlName="clave" type="password"></ion-input>
             <ion-icon name="lock" item-left color="light"></ion-icon>
           </ion-item>
-          <button ion-button class="btn fullWidth btnForm" (click)="ingresar()">
+          <button
+            ion-button
+            class="btn fullWidth btnForm"
+            (click)="ingresar()"
+            [disabled]="!miFormulario.valid"
+          >
             Entrar
           </button>
           <a class="text-link" color="primary" (click)="openResetPassword()"

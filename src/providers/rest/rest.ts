@@ -10,7 +10,7 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class RestProvider {
   apiUrl = "http://desarrollo.cdiproject.com:70/remix/api/usuario/";
-  rutaLogin = "http://desarrollo.cdiproject.com:70/remix/api/login/cliente";
+  rutaLogin = "http://desarrollo.cdiproject.com:70/remix/api/login/clddiente";
 
   constructor(public http: HttpClient) {}
 
@@ -26,23 +26,7 @@ export class RestProvider {
       );
     });
   }
-  /* 
-  addUser(data) {
-    return new Promise((resolve, reject) => {
-      let headers = new HttpHeaders();
-      headers = headers.set("Content-Type", "application/json; charset=utf-8");
-      this.http
-        .post(this.apiUrl + "registro", JSON.stringify(data), { headers })
-        .subscribe(
-          res => {
-            resolve(res);
-          },
-          err => {
-            reject(err);
-          }
-        );
-    });
-  } */
+
   validarUser(data) {
     return new Promise((resolve, reject) => {
       let headers = new HttpHeaders();
@@ -54,7 +38,7 @@ export class RestProvider {
             resolve(res);
           },
           err => {
-            console.log(err);
+            console.log("Fallo el servidor: ", err);
           }
         );
     });

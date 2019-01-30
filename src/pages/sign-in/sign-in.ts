@@ -1,6 +1,7 @@
 import { RestProvider } from "./../../providers/rest/rest";
 import { HomePage } from "./../home/home";
 import { Component } from "@angular/core";
+import { AlertController } from "ionic-angular";
 import {
   IonicPage,
   NavController,
@@ -9,14 +10,11 @@ import {
 } from "ionic-angular";
 import { ResetPasswordPage } from "../reset-password/reset-password";
 import {
-  Form,
   FormControl,
   Validators,
   FormGroup,
-  FormBuilder,
-  DefaultValueAccessor
+  FormBuilder
 } from "@angular/forms";
-import { ResponseOptions } from "@angular/http";
 
 /**
  * Generated class for the SignInPage page.
@@ -39,7 +37,8 @@ export class SignInPage {
     public navParams: NavParams,
     public menu: MenuController,
     public formBuilder: FormBuilder,
-    public restProvider: RestProvider
+    public restProvider: RestProvider,
+    public alertCrtl: AlertController
   ) {
     //Creación de validaciones
     this.miFormulario = formBuilder.group({
@@ -47,7 +46,7 @@ export class SignInPage {
         "",
         Validators.compose([Validators.required, Validators.email])
       ),
-      clave: new FormControl("")
+      clave: new FormControl("", Validators.required)
     });
   }
   ionViewDidEnter() {
@@ -62,11 +61,12 @@ export class SignInPage {
   }
 
   ingresar() {
-    if (!this.miFormulario.valid) {
-      console.log("Error!");
-    } else {
-      /* console.log("Eureka!"); */
+    if (this.miFormulario.valid) {
       this.validarUser();
+    } else {
+      console.log("Error!");
+      this.showAlert("Por favor ingrese correctamente las credenciales.");
+      //alert de error de credenciales
     }
   }
 
@@ -86,9 +86,21 @@ export class SignInPage {
         console.log("Bienvenido!");
       } else {
         console.log("Usuario incorrecto.");
+        this.showAlert(
+          "Disculpe, tenemos algunos inconvenientes. Vuelva a intentar en unos minutos."
+        );
       }
     });
 
     /* this.navCtrl.push(HomePage); */
+  }
+
+  showAlert(mensaje: string) {
+    const alert = this.alertCrtl.create({
+      title: "Ups!",
+      subTitle: mensaje,
+      buttons: ["Aceptar"]
+    });
+    alert.present();
   }
 }
