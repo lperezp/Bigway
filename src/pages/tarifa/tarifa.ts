@@ -14,7 +14,9 @@ import { IonicPage, NavController, NavParams } from "ionic-angular";
   templateUrl: "tarifa.html"
 })
 export class TarifaPage {
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+    let bb = this.navParams.get("puntoB");
+  }
 
   goToBack() {
     this.navCtrl.pop();

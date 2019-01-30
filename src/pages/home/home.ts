@@ -12,6 +12,7 @@ declare var geoXML3;
   templateUrl: "home.html"
 })
 export class HomePage {
+  TarifaPage: any;
   google: any;
   public map: any;
   GoogleAutocomplete: any;
@@ -28,6 +29,7 @@ export class HomePage {
   rr: any;
   marker: boolean;
   trf: boolean;
+  arrayAB: any;
   @ViewChild("map") mapElement;
   constructor(
     public navCtrl: NavController,
@@ -43,6 +45,7 @@ export class HomePage {
     this.directionsService = new google.maps.DirectionsService();
     this.marker = true;
     this.trf = false;
+    this.TarifaPage = TarifaPage;
   }
   ionViewDidEnter() {
     this.menu.enable(true);
@@ -223,6 +226,7 @@ export class HomePage {
       if (status === "OK" && results[0]) {
         this.marker = false;
         this.trf = true;
+        this.puntoB = results[0].geometry.location;
         this.calcularRuta(results[0].geometry.location);
         //completar el input según tu búsqueda
         this.autocomplete.input = item.description;
@@ -270,9 +274,5 @@ export class HomePage {
         }
       }
     );
-  }
-
-  calcularTarifa() {
-    this.navCtrl.push(TarifaPage);
   }
 }

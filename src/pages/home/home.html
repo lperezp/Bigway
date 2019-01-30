@@ -30,8 +30,15 @@
           </ion-item>
         </ion-list>
       </ion-item>
-      <button ion-button (click)="calcularTarifa()" id="boton" *ngIf="trf">
-        Ver Tarifa
+      <button
+        ion-button
+        class="fullWidth btn"
+        [navPush]="TarifaPage"
+        [navParams]="puntoB"
+        id="boton"
+        *ngIf="trf"
+      >
+        Confirmar solicitud
       </button>
     </ion-col>
   </ion-row>
