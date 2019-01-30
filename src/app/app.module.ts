@@ -1,3 +1,4 @@
+import { Network } from "@ionic-native/network";
 import { TarifaPage } from "./../pages/tarifa/tarifa";
 import { RestProvider } from "./../providers/rest/rest";
 import { TravelPage } from "./../pages/travel/travel";
@@ -64,6 +65,7 @@ import { HttpModule } from "@angular/http";
     StatusBar,
     SplashScreen,
     Geolocation,
+    Network,
     RestProvider,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     RestProvider
