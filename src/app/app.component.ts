@@ -14,7 +14,7 @@ import { HelpPage } from "../pages/help/help";
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  rootPage: any = HomePage;
+  rootPage: any = StartPage;
 
   pages: Array<{ title: string; component: any }>;
   constructor(

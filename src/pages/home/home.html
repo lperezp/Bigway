@@ -33,8 +33,7 @@
       <button
         ion-button
         class="fullWidth btn"
-        [navPush]="TarifaPage"
-        [navParams]="puntoB"
+        (click)="openTarifaPage()"
         id="boton"
         *ngIf="trf"
       >

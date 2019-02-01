@@ -28,9 +28,14 @@
             </p>
             <p class="card-detail">
               <ion-icon name="checkmark-circle" color="primary"></ion-icon>
-              {{ b }}
+              Punto B
             </p>
-            <button ion-button color="primary" class="fullWidth">
+            <button
+              ion-button
+              color="primary"
+              class="fullWidth"
+              (click)="confirmar()"
+            >
               Confirmar viaje
             </button>
           </ion-col>

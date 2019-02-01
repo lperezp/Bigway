@@ -60,16 +60,6 @@ export class SignInPage {
     this.navCtrl.push(ResetPasswordPage);
   }
 
-  ingresar() {
-    if (this.miFormulario.valid) {
-      this.validarUser();
-    } else {
-      console.log("Error!");
-      this.showAlert("Por favor ingrese correctamente las credenciales.");
-      //alert de error de credenciales
-    }
-  }
-
   validarUser() {
     this.user = this.miFormulario.value;
     this.restProvider.validarUser(this.user).then(respuesta => {
@@ -86,18 +76,14 @@ export class SignInPage {
         console.log("Bienvenido!");
       } else {
         console.log("Usuario incorrecto.");
-        this.showAlert(
-          "Disculpe, tenemos algunos inconvenientes. Vuelva a intentar en unos minutos."
-        );
+        this.showAlert("Las credenciales son incorrectas.");
       }
     });
-
-    /* this.navCtrl.push(HomePage); */
   }
 
   showAlert(mensaje: string) {
     const alert = this.alertCrtl.create({
-      title: "Ups!",
+      title: "Alerta",
       subTitle: mensaje,
       buttons: ["Aceptar"]
     });

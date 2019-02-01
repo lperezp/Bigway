@@ -1,41 +1,48 @@
 import { TarifaPage } from "./../tarifa/tarifa";
 import { Geolocation } from "@ionic-native/geolocation";
 import { Component, NgZone, ViewChild } from "@angular/core";
-import { NavController, MenuController } from "ionic-angular";
+import {
+  NavController,
+  MenuController,
+  ModalController,
+  AlertController,
+  ToastController
+} from "ionic-angular";
 import {} from "googlemaps";
-
-// DECLARAMOS LA VARIABLE geoXML3 QUE SE IMPORTA EN EL INDEX
-declare var geoXML3;
+import { RestProvider } from "../../providers/rest/rest";
 
 @Component({
   selector: "page-home",
   templateUrl: "home.html"
 })
 export class HomePage {
-  TarifaPage: any;
   google: any;
   public map: any;
   GoogleAutocomplete: any;
   autocomplete: any;
   autocompleteItems: any;
+  directionsService: any;
+  directionsDisplay: any;
   geocoder: any;
   markers: any;
   myMarker: any;
-  directionsService: any;
-  directionsDisplay: any;
   puntoB: string;
   puntoA: string;
-  myParser: any;
-  rr: any;
+  coordsA: string;
+  coordsB: string;
   marker: boolean;
   trf: boolean;
-  arrayAB: any;
+  precio: any;
   @ViewChild("map") mapElement;
   constructor(
     public navCtrl: NavController,
     private zone: NgZone,
     private geolocation: Geolocation,
-    public menu: MenuController
+    public menu: MenuController,
+    public modalCtrl: ModalController,
+    public alertCtrl: AlertController,
+    public toastCtrl: ToastController,
+    public restProvider: RestProvider
   ) {
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     this.autocomplete = { input: "" };
@@ -45,7 +52,6 @@ export class HomePage {
     this.directionsService = new google.maps.DirectionsService();
     this.marker = true;
     this.trf = false;
-    this.TarifaPage = TarifaPage;
   }
   ionViewDidEnter() {
     this.menu.enable(true);
@@ -180,11 +186,8 @@ export class HomePage {
             { location: this.map.getCenter() },
             (result, status) => {
               if (status == "OK" && result[0]) {
-                console.log(
-                  "Direccion de tu marcador actual:",
-                  result[0].formatted_address
-                );
                 this.puntoA = result[0].formatted_address;
+                console.log("coordinada A", result[0]);
               }
             }
           );
@@ -203,7 +206,10 @@ export class HomePage {
     }
 
     this.GoogleAutocomplete.getPlacePredictions(
-      { input: this.autocomplete.input },
+      {
+        input: this.autocomplete.input,
+        componentRestrictions: { country: "pe" }
+      },
       (predictions, status) => {
         this.autocompleteItems = [];
         this.zone.run(() => {
@@ -226,7 +232,7 @@ export class HomePage {
       if (status === "OK" && results[0]) {
         this.marker = false;
         this.trf = true;
-        this.puntoB = results[0].geometry.location;
+        this.coordsB = results[0].geometry.location;
         this.calcularRuta(results[0].geometry.location);
         //completar el input según tu búsqueda
         this.autocomplete.input = item.description;
@@ -247,7 +253,6 @@ export class HomePage {
       this.directionsDisplay = new google.maps.DirectionsRenderer();
 
       if (status == "OK") {
-        console.log(result);
         this.directionsDisplay.setDirections(result);
         this.directionsDisplay.setMap(this.map);
         this.directionsDisplay.setOptions({
@@ -270,9 +275,22 @@ export class HomePage {
       (result, status) => {
         if (status == "OK" && result[0]) {
           console.log("Direccion de tu marcador:", result[0].formatted_address);
+          this.coordsA = this.map.getCenter();
           this.puntoA = result[0].formatted_address;
         }
       }
     );
+  }
+
+  openTarifaPage() {
+    console.log("PuntoA: ", this.coordsA);
+    console.log("PuntoB: ", this.coordsB);
+    this.restProvider.getTarifa(this.coordsA, this.coordsB).then(respuesta => {
+      // La variable precio toma el resultado del API.
+      // Será un número.
+      this.precio = respuesta;
+      const modal = this.modalCtrl.create(TarifaPage);
+      modal.present();
+    });
   }
 }

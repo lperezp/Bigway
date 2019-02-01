@@ -9,14 +9,14 @@ import { Injectable } from "@angular/core";
 */
 @Injectable()
 export class RestProvider {
-  apiUrl = "http://desarrollo.cdiproject.com:70/remix/api/usuario/";
-  rutaLogin = "http://desarrollo.cdiproject.com:70/remix/api/login/clddiente";
+  /*  apiUrl = "http://desarrollo.cdiproject.com:70/remix/api/usuario/"; */
+  rutaAPI = "http://desarrollo.cdiproject.com:70/remix/api/";
 
   constructor(public http: HttpClient) {}
 
   getUsers() {
     return new Promise(resolve => {
-      this.http.get(this.rutaLogin).subscribe(
+      this.http.get(this.rutaAPI).subscribe(
         data => {
           resolve(data);
         },
@@ -32,13 +32,34 @@ export class RestProvider {
       let headers = new HttpHeaders();
       headers = headers.set("Content-Type", "application/json;charset = utf-8");
       this.http
-        .post(this.rutaLogin, JSON.stringify(data), { headers })
+        .post(this.rutaAPI + "login/cliente", JSON.stringify(data), {
+          headers
+        })
         .subscribe(
           res => {
             resolve(res);
           },
           err => {
             console.log("Fallo el servidor: ", err);
+          }
+        );
+    });
+  }
+
+  getTarifa(coords1, coords2) {
+    let param = `{origen: "${coords1}",destino: "${coords2}"}`;
+
+    return new Promise((resolve, reject) => {
+      let headers = new HttpHeaders();
+      headers = headers.set("Content-Type", "application/json;charset = utf-8");
+      this.http
+        .post(this.rutaAPI + "tarifa/zona", param, { headers })
+        .subscribe(
+          res => {
+            resolve(res);
+          },
+          err => {
+            console.log("Error!");
           }
         );
     });
