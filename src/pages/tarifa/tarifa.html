@@ -1,46 +1,67 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title
-      ><ion-icon name="arrow-round-back" (click)="goToBack()"></ion-icon>
-      Detalles del viaje</ion-title
-    >
-  </ion-navbar>
-</ion-header>
-
 <ion-content padding>
-  <ion-card>
-    <ion-card-content class="alignCenter">
-      <ion-grid>
-        <ion-row>
-          <ion-col class="alignLeft">
-            <p class="card-detail">Precio</p>
-            <p class="card-detail">Modalidad de pago</p>
-            <p class="card-detail">Tiempo estimado del viaje</p>
-          </ion-col>
-          <ion-col class="alignRight">
-            <p class="card-detail">S/. 11.00</p>
-            <p class="card-detail">Efectivo</p>
-            <p class="card-detail">55 min</p>
-          </ion-col>
-          <ion-col col-12 class="alignLeft">
-            <p class="card-detail">
-              <ion-icon name="square" color="danger"></ion-icon> Punto A
-            </p>
-            <p class="card-detail">
-              <ion-icon name="checkmark-circle" color="primary"></ion-icon>
-              Punto B
-            </p>
-            <button
-              ion-button
-              color="primary"
-              class="fullWidth"
-              (click)="confirmar()"
+  <ion-grid class="form">
+    <ion-row>
+      <ion-col>
+        <ion-item class="sinPadding">
+          <ion-searchbar
+            [(ngModel)]="autocompleteOrigen.input"
+            (ionInput)="updateSearchResultsOrigen()"
+            placeholder="Origen"
+            class="sinPadding"
+          ></ion-searchbar>
+          <ion-list>
+            <ion-item
+              ><ion-icon name="locate"></ion-icon> Ubicación actual</ion-item
             >
-              Confirmar viaje
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
+            <ion-item
+              ><ion-icon name="briefcase"></ion-icon> Av. La Floresta 497 - San
+              Borja</ion-item
+            >
+            <ion-item
+              ><ion-icon name="briefcase"></ion-icon> Aeropuerto Internacional
+              Jorge Chávez</ion-item
+            >
+          </ion-list>
+          <ion-list [hidden]="autocompleteItemsOrigen.length == 0">
+            <ion-item>Av. La Floresta 497 - San Borja</ion-item>
+            <ion-item>Aeropuerto Internacional Jorge Chávez</ion-item>
+            <ion-item
+              *ngFor="let itemOrigen of autocompleteItemsOrigen"
+              tappable
+              (click)="selectOrigenResult(itemOrigen)"
+            >
+              {{ itemOrigen.description }}
+            </ion-item>
+          </ion-list>
+        </ion-item>
+        <!-- DIVISION-->
+        <ion-item class="sinPadding">
+          <ion-searchbar
+            [(ngModel)]="autocompleteDestino.input"
+            (ionInput)="updateSearchResultsDestino()"
+            placeholder="Destino"
+            class="sinPadding"
+          ></ion-searchbar>
+          <ion-list [hidden]="autocompleteItemsDestino.length == 0">
+            <ion-item
+              *ngFor="let itemDestino of autocompleteItemsDestino"
+              tappable
+              (click)="selectDestinoResult(itemDestino)"
+            >
+              {{ itemDestino.description }}
+            </ion-item>
+          </ion-list>
+        </ion-item>
+        <button
+          ion-button
+          class="fullWidth btn"
+          (click)="openTarifaPage()"
+          id="boton"
+          *ngIf="trf"
+        >
+          Confirmar solicitud
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

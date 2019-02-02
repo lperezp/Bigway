@@ -164,22 +164,12 @@ export class HomePage {
           this.mapElement.nativeElement,
           mapOptions
         );
-
-        /* 
-       USO DE GEOJSON EN EL MAPA
-       this.map.data.loadGeoJson(
-          "https://development-lperezp.000webhostapp.com/map_bit_way_taxi.geojson"
-        );
-        this.map.data.setStyle({
-          /* fillColor: "red",
-          strokeWeight: 1, 
-          visible: true  -> ESTO OCULTA LOS POLÍGONOS 
+        var marker = new google.maps.Marker({
+          position: pos,
+          map: this.map,
+          title: "You are here!"
         });
 
-        this.map.data.addListener("mouseover", function(event) {
-          console.log("Tu zona es", event.feature.l.Name);
-        });
-        */
         this.selectStart();
         google.maps.event.addListener(this.map, "dragend", () => {
           this.geocoder.geocode(
@@ -292,5 +282,10 @@ export class HomePage {
       const modal = this.modalCtrl.create(TarifaPage);
       modal.present();
     });
+  }
+
+  launchModal() {
+    const modal = this.modalCtrl.create(TarifaPage);
+    modal.present();
   }
 }

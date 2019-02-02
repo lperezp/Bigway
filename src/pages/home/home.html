@@ -1,19 +1,17 @@
-<div class="divMarker alignCenter" *ngIf="marker">
+<!-- <div class="divMarker alignCenter" *ngIf="marker">
   <img src="../../assets/imgs/start.png" class="markerFalse" />
-</div>
+</div> -->
 <ion-grid class="form">
   <ion-row>
     <ion-col>
       <ion-item class="sinPadding">
         <ion-input
           type="text"
-          placeholder="Ubicación actual"
-          [(ngModel)]="puntoA"
-          (ionChange)="selectStart()"
+          placeholder="¿A donde quieres ir?"
+          (ionFocus)="launchModal()"
         ></ion-input>
-        <!--           <ion-icon name="locate" color="dark" item-right></ion-icon> -->
       </ion-item>
-      <ion-item class="sinPadding">
+      <!-- <ion-item class="sinPadding">
         <ion-searchbar
           [(ngModel)]="autocomplete.input"
           (ionInput)="updateSearchResults()"
@@ -29,7 +27,7 @@
             {{ item.description }}
           </ion-item>
         </ion-list>
-      </ion-item>
+      </ion-item> -->
       <button
         ion-button
         class="fullWidth btn"
