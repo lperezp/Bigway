@@ -1,0 +1,20 @@
+page-homev1 {
+    #map {
+      height: 100%;
+      width: 100%;
+    }
+    .form {
+      position: absolute;
+      margin-top: 6em;
+      /* display: inline-flex; */
+      z-index: 99 !important;
+    }
+    .scroll-content {
+      padding: 0px !important;
+    }
+  
+    .label-md {
+      margin: 0px !important;
+    }
+  }
+  

@@ -46,13 +46,32 @@ export class RestProvider {
     });
   }
 
-  getTarifa(puntoB) {
-    let param = `{"id_direccion": 1,"destino": "${puntoB}"}`;
-    return new Promise((resolve, reject) => {
+  getTarifa(id_direccion,puntoB,distancia) {
+    let param = `{"id_direccion": ${id_direccion},"destino": "${puntoB}","distancia": "${distancia}","id_cliente": 1}`;
+return new Promise((resolve, reject) => {
       let headers = new HttpHeaders();
       headers = headers.set("Content-Type", "application/json;charset = utf-8");
       this.http
         .post(this.rutaAPI + "tarifa/zona", param, { headers })
+        .subscribe(
+          res => {
+            resolve(res);
+          },
+          err => {
+            console.log("Error!");
+          }
+        );
+    });
+  }
+
+
+  solicitarViaje(pointA,pointB,distancia){
+    let param = `{"id_direccion": ${pointA},"destino": "${pointB}","distancia": "${distancia}","id_cliente": 1,"tarifa": "1.1 km"}`;
+return new Promise((resolve, reject) => {
+      let headers = new HttpHeaders();
+      headers = headers.set("Content-Type", "application/json;charset = utf-8");
+      this.http
+        .post(this.rutaAPI + "servicio/registrar", param, { headers })
         .subscribe(
           res => {
             resolve(res);

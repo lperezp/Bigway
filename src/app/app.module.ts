@@ -21,6 +21,7 @@ import { ConfirmPage } from "../pages/confirm/confirm";
 import { Geolocation } from "@ionic-native/geolocation";
 import { HttpClientModule } from "@angular/common/http";
 import { HttpModule } from "@angular/http";
+import { Homev1Page } from "../pages/homev1/homev1";
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { HttpModule } from "@angular/http";
     PagoPage,
     SelectedTravelPage,
     TravelPage,
-    TarifaPage
+    TarifaPage,
+    Homev1Page
   ],
   imports: [
     BrowserModule,
@@ -59,7 +61,8 @@ import { HttpModule } from "@angular/http";
     PagoPage,
     SelectedTravelPage,
     TravelPage,
-    TarifaPage
+    TarifaPage,
+    Homev1Page
   ],
   providers: [
     StatusBar,

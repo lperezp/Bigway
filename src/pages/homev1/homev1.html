@@ -1,6 +1,3 @@
-<div class="divMarker alignCenter" *ngIf="marker">
-    <img src="../../assets/imgs/start.png" class="markerFalse" />
-  </div>
 <ion-grid class="form">
   <ion-row>
     <ion-col>
@@ -8,12 +5,19 @@
         <ion-input
           type="text"
           placeholder="¿A donde quieres ir?"
-          (ionFocus)="launchModal()"
           [(ngModel)]="puntoA"
         ></ion-input>
+         <!-- (ionFocus)="launchModal()" -->
       </ion-item>
-      <button ion-button class="btn fullWidth" (click)="launchModal()">Seguir</button>
-      <!-- <ion-item class="sinPadding">
+      <button
+        ion-button
+        class="fullWidth btn"
+        id="botonA"
+        (click)="launchModal()"
+      >
+       Seguir
+      </button>
+    <!--   <ion-item class="sinPadding">
         <ion-searchbar
           [(ngModel)]="autocomplete.input"
           (ionInput)="updateSearchResults()"

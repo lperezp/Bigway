@@ -6,16 +6,17 @@ import {
   MenuController,
   ModalController,
   AlertController,
-  ToastController
+  ToastController,
+  NavParams
 } from "ionic-angular";
 import {} from "googlemaps";
 import { RestProvider } from "../../providers/rest/rest";
 
 @Component({
-  selector: "page-home",
-  templateUrl: "home.html"
+  selector: "page-homev1",
+  templateUrl: "homev1.html"
 })
-export class HomePage {
+export class Homev1Page {
   google: any;
   public map: any;
   GoogleAutocomplete: any;
@@ -42,7 +43,8 @@ export class HomePage {
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
-    public restProvider: RestProvider
+    public restProvider: RestProvider,
+    public navParams: NavParams
   ) {
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     this.autocomplete = { input: "" };
@@ -52,6 +54,7 @@ export class HomePage {
     this.directionsService = new google.maps.DirectionsService();
     this.marker = true;
     this.trf = false;
+    this.navParams.get('puntoA');
   }
   ionViewDidEnter() {
     this.menu.enable(true);
@@ -164,7 +167,7 @@ export class HomePage {
           this.mapElement.nativeElement,
           mapOptions
         );
-       /*  var icon = {
+        var icon = {
           url: "../../assets/imgs/start.png", // url
           scaledSize: new google.maps.Size(30, 50), // scaled size
           origin: new google.maps.Point(0,0), // origin
@@ -174,11 +177,11 @@ export class HomePage {
           position: pos,
           map: this.map,
           icon: icon
-        }); */
+        });
 
         /* EFECTO DRAGEND -> ARRASTRE */
          this.selectStart();
-        google.maps.event.addListener(this.map, "dragend", () => {
+        /* google.maps.event.addListener(this.map, "dragend", () => {
           this.geocoder.geocode(
             { location: this.map.getCenter() },
             (result, status) => {
@@ -188,7 +191,7 @@ export class HomePage {
               }
             }
           );
-        });
+        }); */
         /* EFECTO DRAGEND */
       })
       .catch(err => {
@@ -281,7 +284,7 @@ export class HomePage {
   }
 
 
- /*  openTarifaPage() {
+/*   openTarifaPage() {
     console.log("PuntoA: ", this.coordsA);
     console.log("PuntoB: ", this.coordsB);
     this.restProvider.getTarifa("ss").then(respuesta => {
@@ -294,7 +297,7 @@ export class HomePage {
   } */
 
   launchModal() {
-    const modal = this.modalCtrl.create(TarifaPage,{ data: this.puntoA });
+    const modal = this.modalCtrl.create(TarifaPage);
     modal.present();
   }
 }

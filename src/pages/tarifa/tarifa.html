@@ -3,18 +3,24 @@
     <ion-row>
       <ion-col>
         <ion-item class="sinPadding">
+           <!-- <ion-input
+            type="text"
+            placeholder="¿A donde quieres ir?"
+            [(ngModel)]="puntoA"
+          ></ion-input> -->
+          <!-- [(ngModel)]="autocompleteOrigen.input"  -->
           <ion-searchbar
-            [(ngModel)]="autocompleteOrigen.input"
+            [(ngModel)]="puntoA" 
             (ionInput)="updateSearchResultsOrigen()"
             placeholder="Origen"
             class="sinPadding"
             id="ee"
           ></ion-searchbar>
           <ion-list >
-            <ion-item [hidden]="autocompleteItemsOrigen.length == 0">
+            <ion-item (click)="puntoA='Av. La Floresta 497 - San Borja'" [hidden]="autocompleteItemsOrigen.length > 0">
               <ion-icon name="heart"></ion-icon>
               Av. La Floresta 497 - San Borja</ion-item>
-            <ion-item [hidden]="autocompleteItemsOrigen.length == 0">
+            <ion-item (click)="puntoA='Aeropuerto Internacional Jorge Chávez'" [hidden]="autocompleteItemsOrigen.length > 0">
               <ion-icon name="heart"></ion-icon>
               Aeropuerto Internacional Jorge Chávez</ion-item>
             <ion-item

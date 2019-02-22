@@ -5,7 +5,8 @@ import {
   ToastController,
   AlertController,
   MenuController,
-  ModalController
+  ModalController,
+  NavParams
 } from "ionic-angular";
 import { RestProvider } from "../../providers/rest/rest";
 
@@ -34,9 +35,15 @@ export class TarifaPage {
   directionsDisplay: any;
   geocoder: any;
   markers: any;
-  puntoLlegada: any;
+  public puntoLlegada: any;
   tarifa: any;
   trf:boolean;
+  puntoA:any;
+  destination : any;
+  puntoB: any;
+  distancia: any;
+  id_direccion: any;
+  
   constructor(
     public navCtrl: NavController,
     private zone: NgZone,
@@ -44,7 +51,8 @@ export class TarifaPage {
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
-    public restProvider: RestProvider
+    public restProvider: RestProvider,
+    public navParams: NavParams
   ) {
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     this.autocompleteOrigen = { input: "" };
@@ -55,6 +63,7 @@ export class TarifaPage {
     this.markers = [];
     this.directionsService = new google.maps.DirectionsService();
     this.trf = false;
+    this.puntoA= this.navParams.get('data');
   }
 
   updateSearchResultsOrigen() {
@@ -222,6 +231,7 @@ export class TarifaPage {
       (results, status) => {
         if (status === "OK" && results[0]) {
           console.log("location", results[0].formatted_address);
+          this.puntoB = results[0].formatted_address;
           console.log("PuntoA_lat", results[0].geometry.viewport.ma.j);
           console.log("PuntoA_lng", results[0].geometry.viewport.ga.l);
           this.puntoLlegada ="POINT(" + results[0].geometry.viewport.ga.l +" " + results[0].geometry.viewport.ma.j +")";
@@ -265,7 +275,9 @@ export class TarifaPage {
   }
 
   calcularTarifa() {
-    this.restProvider.getTarifa(this.puntoLlegada).then(respuesta => {
+    this.id_direccion=0;
+    this.restProvider.getTarifa(this.id_direccion,this.puntoLlegada,this.distancia).then(respuesta => {
+      
       // La variable precio toma el resultado del API.
       // Será un número.
       this.tarifa = respuesta;
@@ -274,6 +286,28 @@ export class TarifaPage {
         this.trf= true;
       }
     });
+    this.destination = this.puntoB;
+    var origin = this.puntoA;
+    var service = new google.maps.DistanceMatrixService();
+      service.getDistanceMatrix({
+        origins: [origin],
+        destinations: [this.destination],
+        travelMode: google.maps.TravelMode.DRIVING,
+        avoidHighways: false,
+        avoidTolls: false,
+        unitSystem: google.maps.UnitSystem. METRIC
+        }, (response, status) =>{
+         /*  if(status === 'OK') {
+            console.log(status); */
+            var origin = this.puntoA;
+            var destinations = this.puntoB;
+          console.log("KM: ", response.rows[0].elements[0].distance);
+          console.log("KM: ", response.rows[0].elements[0].distance.text);
+          this.distancia = response.rows[0].elements[0].distance.text;
+        /* } else {
+          console.log(status);
+        } */
+      })
   }
 
   aceptarViaje(){
@@ -283,5 +317,15 @@ export class TarifaPage {
       duration: 3000
     }).present();
     
+  }
+
+
+
+  /* ================================================================ */
+
+  sendPush(){
+    this.restProvider.getTarifa(this.id_direccion,this.puntoLlegada,this.distancia).then(respuesta => {
+  });
+
   }
 }
