@@ -1,3 +1,4 @@
+import { SignInPage } from "./../pages/sign-in/sign-in";
 import { TarifaPage } from "./../pages/tarifa/tarifa";
 import { HomePage } from "./../pages/home/home";
 import { StartPage } from "./../pages/start/start";

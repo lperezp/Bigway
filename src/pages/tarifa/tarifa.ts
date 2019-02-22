@@ -24,6 +24,7 @@ import { RestProvider } from "../../providers/rest/rest";
 export class TarifaPage {
   google: any;
   public map: any;
+  public map2: any;
   GoogleAutocomplete: any;
   autocompleteOrigen: any;
   autocompleteDestino: any;
@@ -33,6 +34,9 @@ export class TarifaPage {
   directionsDisplay: any;
   geocoder: any;
   markers: any;
+  puntoLlegada: any;
+  tarifa: any;
+  trf:boolean;
   constructor(
     public navCtrl: NavController,
     private zone: NgZone,
@@ -50,6 +54,7 @@ export class TarifaPage {
     this.geocoder = new google.maps.Geocoder();
     this.markers = [];
     this.directionsService = new google.maps.DirectionsService();
+    this.trf = false;
   }
 
   updateSearchResultsOrigen() {
@@ -81,6 +86,8 @@ export class TarifaPage {
       { placeId: itemOrigen.place_id },
       (results, status) => {
         if (status === "OK" && results[0]) {
+          console.log("PuntoA_", results[0]);
+          console.log("PuntoA_", results[0].geometry.viewport.ma.j);
           /* this.calcularRuta(results[0].geometry.location); */
           //completar el input según tu búsqueda
           this.autocompleteOrigen.input = itemOrigen.description;
@@ -113,6 +120,100 @@ export class TarifaPage {
     );
   }
 
+  initMap() {
+    this.map2 = new google.maps.Map(document.getElementById('map2'), {
+      center: {lat:-12.046373, lng:-77.042755 },
+          zoom: 16,
+          mapTypeControl: false,
+          zoomControl: false,
+          scaleControl: false,
+          fullscreenControl: false,
+          streetViewControl: false,
+          mapTypeId: google.maps.MapTypeId.ROADMAP /* INICIO DEL STYLE */,
+          styles: [
+            { elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
+            { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+            {
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#616161" }]
+            },
+            {
+              elementType: "labels.text.stroke",
+              stylers: [{ color: "#f5f5f5" }]
+            },
+            {
+              featureType: "administrative.land_parcel",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#bdbdbd" }]
+            },
+            {
+              featureType: "poi",
+              elementType: "geometry",
+              stylers: [{ color: "#eeeeee" }]
+            },
+            {
+              featureType: "poi",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#757575" }]
+            },
+            {
+              featureType: "poi.park",
+              elementType: "geometry",
+              stylers: [{ color: "#e5e5e5" }]
+            },
+            {
+              featureType: "poi.park",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#9e9e9e" }]
+            },
+            {
+              featureType: "road",
+              elementType: "geometry",
+              stylers: [{ color: "#ffffff" }]
+            },
+            {
+              featureType: "road.arterial",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#757575" }]
+            },
+            {
+              featureType: "road.highway",
+              elementType: "geometry",
+              stylers: [{ color: "#dadada" }]
+            },
+            {
+              featureType: "road.highway",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#616161" }]
+            },
+            {
+              featureType: "road.local",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#9e9e9e" }]
+            },
+            {
+              featureType: "transit.line",
+              elementType: "geometry",
+              stylers: [{ color: "#e5e5e5" }]
+            },
+            {
+              featureType: "transit.station",
+              elementType: "geometry",
+              stylers: [{ color: "#eeeeee" }]
+            },
+            {
+              featureType: "water",
+              elementType: "geometry",
+              stylers: [{ color: "#c9c9c9" }]
+            },
+            {
+              featureType: "water",
+              elementType: "labels.text.fill",
+              stylers: [{ color: "#9e9e9e" }]
+            }
+          ]
+        });
+    }
   // METODO QUE SE REALIZA AL SELECCIONAR UN LUGAR
   selectDestinoResult(itemDestino) {
     this.autocompleteItemsDestino = [];
@@ -120,35 +221,67 @@ export class TarifaPage {
       { placeId: itemDestino.place_id },
       (results, status) => {
         if (status === "OK" && results[0]) {
-          /* this.calcularRuta(results[0].geometry.location); */
+          console.log("location", results[0].formatted_address);
+          console.log("PuntoA_lat", results[0].geometry.viewport.ma.j);
+          console.log("PuntoA_lng", results[0].geometry.viewport.ga.l);
+          this.puntoLlegada ="POINT(" + results[0].geometry.viewport.ga.l +" " + results[0].geometry.viewport.ma.j +")";
+          console.log(this.puntoLlegada);
+          this.calcularTarifa();
+          this.initMap();
+          this.calcularRuta(results[0].formatted_address);
           //completar el input según tu búsqueda
           this.autocompleteDestino.input = itemDestino.description;
+
+          // LLAMAR AL METODO QUE CALCULE LA TARIFA
         } else {
           console.log("Error al ubicar el destino.");
         }
       }
     );
   }
-  // METODO QUE CALCULA LA RUTA DEL PUNTO A AL PUNTO B
-  calcularRuta(destino: any) {
+  // METODO QUE PINTA LA RUTA DEL PUNTO A AL PUNTO B
+  calcularRuta(destino:any) {
     let request = {
-      origin: this.map.getCenter(),
+      origin: "Av. de la Floresta 497, San Borja 15037, Perú",
       destination: destino,
       travelMode: "DRIVING"
-    }; //AQUI VA EL ORIGEN -> PUNTO ACTUAL
+    }; 
     this.directionsService.route(request, (result, status) => {
       this.directionsDisplay = new google.maps.DirectionsRenderer();
 
       if (status == "OK") {
         this.directionsDisplay.setDirections(result);
-        this.directionsDisplay.setMap(this.map);
+        this.directionsDisplay.setMap(this.map2);
         this.directionsDisplay.setOptions({
           suppressMarkers: false,
           polylineOptions: {
             strokeColor: "#13937b"
           }
         });
+      }else{
+        console.log("error")
       }
     });
+  }
+
+  calcularTarifa() {
+    this.restProvider.getTarifa(this.puntoLlegada).then(respuesta => {
+      // La variable precio toma el resultado del API.
+      // Será un número.
+      this.tarifa = respuesta;
+      console.log("PRECIO",this.tarifa);
+      if(this.tarifa!=null){
+        this.trf= true;
+      }
+    });
+  }
+
+  aceptarViaje(){
+    this.navCtrl.pop();
+    this.toastCtrl.create({
+      message: "Buscando conductor. Espere un momento por favor...",
+      duration: 3000
+    }).present();
+    
   }
 }

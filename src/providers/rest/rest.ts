@@ -46,9 +46,8 @@ export class RestProvider {
     });
   }
 
-  getTarifa(coords1, coords2) {
-    let param = `{origen: "${coords1}",destino: "${coords2}"}`;
-
+  getTarifa(puntoB) {
+    let param = `{"id_direccion": 1,"destino": "${puntoB}"}`;
     return new Promise((resolve, reject) => {
       let headers = new HttpHeaders();
       headers = headers.set("Content-Type", "application/json;charset = utf-8");

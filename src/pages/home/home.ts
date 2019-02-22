@@ -70,7 +70,7 @@ export class HomePage {
         let pos = { lat: resp.coords.latitude, lng: resp.coords.longitude };
         let mapOptions: google.maps.MapOptions = {
           center: pos,
-          zoom: 18,
+          zoom: 16,
           mapTypeControl: false,
           zoomControl: false,
           scaleControl: false,
@@ -164,14 +164,15 @@ export class HomePage {
           this.mapElement.nativeElement,
           mapOptions
         );
-        var marker = new google.maps.Marker({
+        /* var marker = new google.maps.Marker({
           position: pos,
           map: this.map,
           title: "You are here!"
-        });
+        }); */
 
-        this.selectStart();
-        google.maps.event.addListener(this.map, "dragend", () => {
+        /* EFECTO DRAGEND -> ARRASTRE */
+        /*  this.selectStart(); */
+        /* google.maps.event.addListener(this.map, "dragend", () => {
           this.geocoder.geocode(
             { location: this.map.getCenter() },
             (result, status) => {
@@ -181,7 +182,8 @@ export class HomePage {
               }
             }
           );
-        });
+        }); */
+        /* EFECTO DRAGEND */
       })
       .catch(err => {
         console.error(err);
@@ -259,7 +261,7 @@ export class HomePage {
   deleteMarker() {}
 
   // METODO QUE IMPRIME LA UBICACIÓN DEL MARCADOR CENTRAL
-  selectStart() {
+  /*   selectStart() {
     this.geocoder.geocode(
       { location: this.map.getCenter() },
       (result, status) => {
@@ -271,11 +273,12 @@ export class HomePage {
       }
     );
   }
+ */
 
   openTarifaPage() {
     console.log("PuntoA: ", this.coordsA);
     console.log("PuntoB: ", this.coordsB);
-    this.restProvider.getTarifa(this.coordsA, this.coordsB).then(respuesta => {
+    this.restProvider.getTarifa("ss").then(respuesta => {
       // La variable precio toma el resultado del API.
       // Será un número.
       this.precio = respuesta;
