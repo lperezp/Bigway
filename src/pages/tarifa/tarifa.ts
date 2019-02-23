@@ -37,13 +37,13 @@ export class TarifaPage {
   markers: any;
   public puntoLlegada: any;
   tarifa: any;
-  trf:boolean;
-  puntoA:any;
-  destination : any;
+  trf: boolean;
+  puntoA: any;
+  destination: any;
   puntoB: any;
   distancia: any;
   id_direccion: any;
-  
+
   constructor(
     public navCtrl: NavController,
     private zone: NgZone,
@@ -63,7 +63,13 @@ export class TarifaPage {
     this.markers = [];
     this.directionsService = new google.maps.DirectionsService();
     this.trf = false;
-    this.puntoA= this.navParams.get('data');
+    this.puntoA = this.navParams.get("data");
+  }
+
+  ngOnInit() {
+    /*  setInterval(() => { */
+    this.sendPush();
+    /*   }, 5000); */
   }
 
   updateSearchResultsOrigen() {
@@ -130,99 +136,99 @@ export class TarifaPage {
   }
 
   initMap() {
-    this.map2 = new google.maps.Map(document.getElementById('map2'), {
-      center: {lat:-12.046373, lng:-77.042755 },
-          zoom: 16,
-          mapTypeControl: false,
-          zoomControl: false,
-          scaleControl: false,
-          fullscreenControl: false,
-          streetViewControl: false,
-          mapTypeId: google.maps.MapTypeId.ROADMAP /* INICIO DEL STYLE */,
-          styles: [
-            { elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
-            { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
-            {
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#616161" }]
-            },
-            {
-              elementType: "labels.text.stroke",
-              stylers: [{ color: "#f5f5f5" }]
-            },
-            {
-              featureType: "administrative.land_parcel",
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#bdbdbd" }]
-            },
-            {
-              featureType: "poi",
-              elementType: "geometry",
-              stylers: [{ color: "#eeeeee" }]
-            },
-            {
-              featureType: "poi",
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#757575" }]
-            },
-            {
-              featureType: "poi.park",
-              elementType: "geometry",
-              stylers: [{ color: "#e5e5e5" }]
-            },
-            {
-              featureType: "poi.park",
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#9e9e9e" }]
-            },
-            {
-              featureType: "road",
-              elementType: "geometry",
-              stylers: [{ color: "#ffffff" }]
-            },
-            {
-              featureType: "road.arterial",
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#757575" }]
-            },
-            {
-              featureType: "road.highway",
-              elementType: "geometry",
-              stylers: [{ color: "#dadada" }]
-            },
-            {
-              featureType: "road.highway",
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#616161" }]
-            },
-            {
-              featureType: "road.local",
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#9e9e9e" }]
-            },
-            {
-              featureType: "transit.line",
-              elementType: "geometry",
-              stylers: [{ color: "#e5e5e5" }]
-            },
-            {
-              featureType: "transit.station",
-              elementType: "geometry",
-              stylers: [{ color: "#eeeeee" }]
-            },
-            {
-              featureType: "water",
-              elementType: "geometry",
-              stylers: [{ color: "#c9c9c9" }]
-            },
-            {
-              featureType: "water",
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#9e9e9e" }]
-            }
-          ]
-        });
-    }
+    this.map2 = new google.maps.Map(document.getElementById("map2"), {
+      center: { lat: -12.046373, lng: -77.042755 },
+      zoom: 16,
+      mapTypeControl: false,
+      zoomControl: false,
+      scaleControl: false,
+      fullscreenControl: false,
+      streetViewControl: false,
+      mapTypeId: google.maps.MapTypeId.ROADMAP /* INICIO DEL STYLE */,
+      styles: [
+        { elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
+        { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+        {
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#616161" }]
+        },
+        {
+          elementType: "labels.text.stroke",
+          stylers: [{ color: "#f5f5f5" }]
+        },
+        {
+          featureType: "administrative.land_parcel",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#bdbdbd" }]
+        },
+        {
+          featureType: "poi",
+          elementType: "geometry",
+          stylers: [{ color: "#eeeeee" }]
+        },
+        {
+          featureType: "poi",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#757575" }]
+        },
+        {
+          featureType: "poi.park",
+          elementType: "geometry",
+          stylers: [{ color: "#e5e5e5" }]
+        },
+        {
+          featureType: "poi.park",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#9e9e9e" }]
+        },
+        {
+          featureType: "road",
+          elementType: "geometry",
+          stylers: [{ color: "#ffffff" }]
+        },
+        {
+          featureType: "road.arterial",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#757575" }]
+        },
+        {
+          featureType: "road.highway",
+          elementType: "geometry",
+          stylers: [{ color: "#dadada" }]
+        },
+        {
+          featureType: "road.highway",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#616161" }]
+        },
+        {
+          featureType: "road.local",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#9e9e9e" }]
+        },
+        {
+          featureType: "transit.line",
+          elementType: "geometry",
+          stylers: [{ color: "#e5e5e5" }]
+        },
+        {
+          featureType: "transit.station",
+          elementType: "geometry",
+          stylers: [{ color: "#eeeeee" }]
+        },
+        {
+          featureType: "water",
+          elementType: "geometry",
+          stylers: [{ color: "#c9c9c9" }]
+        },
+        {
+          featureType: "water",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#9e9e9e" }]
+        }
+      ]
+    });
+  }
   // METODO QUE SE REALIZA AL SELECCIONAR UN LUGAR
   selectDestinoResult(itemDestino) {
     this.autocompleteItemsDestino = [];
@@ -234,7 +240,12 @@ export class TarifaPage {
           this.puntoB = results[0].formatted_address;
           console.log("PuntoA_lat", results[0].geometry.viewport.ma.j);
           console.log("PuntoA_lng", results[0].geometry.viewport.ga.l);
-          this.puntoLlegada ="POINT(" + results[0].geometry.viewport.ga.l +" " + results[0].geometry.viewport.ma.j +")";
+          this.puntoLlegada =
+            "POINT(" +
+            results[0].geometry.viewport.ga.l +
+            " " +
+            results[0].geometry.viewport.ma.j +
+            ")";
           console.log(this.puntoLlegada);
           this.calcularTarifa();
           this.initMap();
@@ -250,12 +261,12 @@ export class TarifaPage {
     );
   }
   // METODO QUE PINTA LA RUTA DEL PUNTO A AL PUNTO B
-  calcularRuta(destino:any) {
+  calcularRuta(destino: any) {
     let request = {
       origin: "Av. de la Floresta 497, San Borja 15037, Perú",
       destination: destino,
       travelMode: "DRIVING"
-    }; 
+    };
     this.directionsService.route(request, (result, status) => {
       this.directionsDisplay = new google.maps.DirectionsRenderer();
 
@@ -268,64 +279,79 @@ export class TarifaPage {
             strokeColor: "#13937b"
           }
         });
-      }else{
-        console.log("error")
+      } else {
+        console.log("error");
       }
     });
   }
 
   calcularTarifa() {
-    this.id_direccion=0;
-    this.restProvider.getTarifa(this.id_direccion,this.puntoLlegada,this.distancia).then(respuesta => {
-      
-      // La variable precio toma el resultado del API.
-      // Será un número.
-      this.tarifa = respuesta;
-      console.log("PRECIO",this.tarifa);
-      if(this.tarifa!=null){
-        this.trf= true;
-      }
-    });
+    this.id_direccion = 0;
+    this.restProvider
+      .getTarifa(this.id_direccion, this.puntoLlegada, this.distancia)
+      .then(respuesta => {
+        // La variable precio toma el resultado del API.
+        // Será un número.
+        this.tarifa = respuesta;
+        console.log("PRECIO", this.tarifa);
+        if (this.tarifa != null) {
+          this.trf = true;
+        }
+      });
     this.destination = this.puntoB;
     var origin = this.puntoA;
     var service = new google.maps.DistanceMatrixService();
-      service.getDistanceMatrix({
+    service.getDistanceMatrix(
+      {
         origins: [origin],
         destinations: [this.destination],
         travelMode: google.maps.TravelMode.DRIVING,
         avoidHighways: false,
         avoidTolls: false,
-        unitSystem: google.maps.UnitSystem. METRIC
-        }, (response, status) =>{
-         /*  if(status === 'OK') {
+        unitSystem: google.maps.UnitSystem.METRIC
+      },
+      (response, status) => {
+        /*  if(status === 'OK') {
             console.log(status); */
-            var origin = this.puntoA;
-            var destinations = this.puntoB;
-          console.log("KM: ", response.rows[0].elements[0].distance);
-          console.log("KM: ", response.rows[0].elements[0].distance.text);
-          this.distancia = response.rows[0].elements[0].distance.text;
+        var origin = this.puntoA;
+        var destinations = this.puntoB;
+        console.log("KM: ", response.rows[0].elements[0].distance);
+        console.log("KM: ", response.rows[0].elements[0].distance.text);
+        this.distancia = response.rows[0].elements[0].distance.text;
         /* } else {
           console.log(status);
         } */
-      })
+      }
+    );
   }
 
-  aceptarViaje(){
+  aceptarViaje() {
     this.navCtrl.pop();
-    this.toastCtrl.create({
-      message: "Buscando conductor. Espere un momento por favor...",
-      duration: 3000
-    }).present();
-    
+    this.toastCtrl
+      .create({
+        message: "Buscando conductor. Espere un momento por favor...",
+        duration: 3000
+      })
+      .present();
   }
-
-
 
   /* ================================================================ */
 
-  sendPush(){
-    this.restProvider.getTarifa(this.id_direccion,this.puntoLlegada,this.distancia).then(respuesta => {
-  });
-
+  sendPush() {
+    this.restProvider
+      .solicitarViaje(
+        "POINT(-77.13674111970852 -12.0395974802915)",
+        "POINT(-77.13674111970852 -12.0395974802915)",
+        "40 km"
+      )
+      .then(respuesta => {
+        console.log(respuesta);
+        console.log("ok");
+      });
+    /* this.alertCtrl
+      .create({
+        title: "Hola"
+      })
+      .present(); */
   }
 }

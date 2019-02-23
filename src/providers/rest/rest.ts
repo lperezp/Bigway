@@ -46,9 +46,9 @@ export class RestProvider {
     });
   }
 
-  getTarifa(id_direccion,puntoB,distancia) {
+  getTarifa(id_direccion, puntoB, distancia) {
     let param = `{"id_direccion": ${id_direccion},"destino": "${puntoB}","distancia": "${distancia}","id_cliente": 1}`;
-return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       let headers = new HttpHeaders();
       headers = headers.set("Content-Type", "application/json;charset = utf-8");
       this.http
@@ -64,10 +64,18 @@ return new Promise((resolve, reject) => {
     });
   }
 
-
-  solicitarViaje(pointA,pointB,distancia){
-    let param = `{"id_direccion": ${pointA},"destino": "${pointB}","distancia": "${distancia}","id_cliente": 1,"tarifa": "1.1 km"}`;
-return new Promise((resolve, reject) => {
+  solicitarViaje(pointA, pointB, distancia) {
+    let param = {
+      id_servicio: 24,
+      id_conductor: 20,
+      id_usuario: 3,
+      nombre_conductor: "",
+      kilometro: "40 km",
+      precio: 40,
+      origen: "POINT(-77.13674111970852 -12.0395974802915)",
+      destino: "POINT(-77.13674111970852 -12.0395974802915)"
+    };
+    return new Promise((resolve, reject) => {
       let headers = new HttpHeaders();
       headers = headers.set("Content-Type", "application/json;charset = utf-8");
       this.http
