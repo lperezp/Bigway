@@ -10,6 +10,9 @@ import {
 } from "ionic-angular";
 import { RestProvider } from "../../providers/rest/rest";
 
+interface respuesta {
+  nombre_conductor: "";
+}
 /**
  * Generated class for the TarifaPage page.
  *
@@ -43,6 +46,10 @@ export class TarifaPage {
   puntoB: any;
   distancia: any;
   id_direccion: any;
+  respuesta: any;
+  rpta: {};
+  e: any;
+  arreglo: any;
 
   constructor(
     public navCtrl: NavController,
@@ -344,14 +351,45 @@ export class TarifaPage {
         "POINT(-77.13674111970852 -12.0395974802915)",
         "40 km"
       )
-      .then(respuesta => {
-        console.log(respuesta);
+      .then(respuestaa => {
+        console.log(respuestaa);
+        this.respuesta = respuestaa;
         console.log("ok");
+        this.e = setInterval(() => {
+          this.confirmarViaje(this.respuesta.id_servicio);
+        }, 5000);
+        console.log("n", this.respuesta.nombre_conductor);
       });
     /* this.alertCtrl
       .create({
         title: "Hola"
       })
       .present(); */
+  }
+
+  confirmarViaje(id_servicio) {
+    this.restProvider
+      .confirmarViaje(
+        "POINT(-77.13674111970852 -12.0395974802915)",
+        "POINT(-77.13674111970852 -12.0395974802915)",
+        "40 km",
+        id_servicio
+      )
+      .then(respuesta => {
+        this.arreglo = respuesta;
+        console.log("tienes un viaje en curso", respuesta);
+        console.log("antes de matar al bucle", this.arreglo.nombre_conductor);
+        if (this.arreglo.nombre_conductor != "") {
+          console.log("matar bucle", this.respuesta.nombre_conductor);
+          clearInterval(this.e);
+          this.alertCtrl
+            .create({
+              title: "Atención",
+              subTitle:
+                "Su viaje fue aceptado por" + this.arreglo.nombre_conductor
+            })
+            .present();
+        }
+      });
   }
 }

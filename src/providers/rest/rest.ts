@@ -90,4 +90,31 @@ export class RestProvider {
         );
     });
   }
+
+  confirmarViaje(pointA, pointB, distancia, id_servicio) {
+    let param = {
+      id_servicio: id_servicio,
+      id_conductor: 20,
+      id_usuario: 3,
+      nombre_conductor: "",
+      kilometro: "40 km",
+      precio: 40,
+      origen: "POINT(-77.13674111970852 -12.0395974802915)",
+      destino: "POINT(-77.13674111970852 -12.0395974802915)"
+    };
+    return new Promise((resolve, reject) => {
+      let headers = new HttpHeaders();
+      headers = headers.set("Content-Type", "application/json;charset = utf-8");
+      this.http
+        .post(this.rutaAPI + "servicio/cliente/aceptado", param, { headers })
+        .subscribe(
+          res => {
+            resolve(res);
+          },
+          err => {
+            console.log("Error!");
+          }
+        );
+    });
+  }
 }
