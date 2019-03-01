@@ -47,10 +47,11 @@ export class TarifaPage {
   distancia: any;
   id_direccion: any;
   respuesta: any;
-  rpta: {};
+  rpta: any;
   e: any;
   arreglo: any;
-
+  respPedido: Response;
+  public estado :any=1;
   constructor(
     public navCtrl: NavController,
     private zone: NgZone,
@@ -73,11 +74,7 @@ export class TarifaPage {
     this.puntoA = this.navParams.get("data");
   }
 
-  ngOnInit() {
-    /*  setInterval(() => { */
-    this.sendPush();
-    /*   }, 5000); */
-  }
+  ngOnInit() {}
 
   updateSearchResultsOrigen() {
     if (this.autocompleteOrigen.input == "") {
@@ -245,8 +242,8 @@ export class TarifaPage {
         if (status === "OK" && results[0]) {
           console.log("location", results[0].formatted_address);
           this.puntoB = results[0].formatted_address;
-          console.log("PuntoA_lat", results[0].geometry.viewport.ma.j);
-          console.log("PuntoA_lng", results[0].geometry.viewport.ga.l);
+          console.log("PuntoB_lat", results[0].geometry.viewport.ma.j);
+          console.log("PuntoB_lng", results[0].geometry.viewport.ga.l);
           this.puntoLlegada =
             "POINT(" +
             results[0].geometry.viewport.ga.l +
@@ -254,9 +251,10 @@ export class TarifaPage {
             results[0].geometry.viewport.ma.j +
             ")";
           console.log(this.puntoLlegada);
-          this.calcularTarifa();
           this.initMap();
           this.calcularRuta(results[0].formatted_address);
+          this.id_direccion = 0;
+          this.calcularTarifa();
           //completar el input según tu búsqueda
           this.autocompleteDestino.input = itemDestino.description;
 
@@ -270,7 +268,7 @@ export class TarifaPage {
   // METODO QUE PINTA LA RUTA DEL PUNTO A AL PUNTO B
   calcularRuta(destino: any) {
     let request = {
-      origin: "Av. de la Floresta 497, San Borja 15037, Perú",
+      origin: this.puntoA,
       destination: destino,
       travelMode: "DRIVING"
     };
@@ -293,18 +291,6 @@ export class TarifaPage {
   }
 
   calcularTarifa() {
-    this.id_direccion = 0;
-    this.restProvider
-      .getTarifa(this.id_direccion, this.puntoLlegada, this.distancia)
-      .then(respuesta => {
-        // La variable precio toma el resultado del API.
-        // Será un número.
-        this.tarifa = respuesta;
-        console.log("PRECIO", this.tarifa);
-        if (this.tarifa != null) {
-          this.trf = true;
-        }
-      });
     this.destination = this.puntoB;
     var origin = this.puntoA;
     var service = new google.maps.DistanceMatrixService();
@@ -318,78 +304,120 @@ export class TarifaPage {
         unitSystem: google.maps.UnitSystem.METRIC
       },
       (response, status) => {
-        /*  if(status === 'OK') {
-            console.log(status); */
         var origin = this.puntoA;
         var destinations = this.puntoB;
         console.log("KM: ", response.rows[0].elements[0].distance);
         console.log("KM: ", response.rows[0].elements[0].distance.text);
         this.distancia = response.rows[0].elements[0].distance.text;
-        /* } else {
-          console.log(status);
-        } */
+        this.restProvider
+          .getTarifa(this.id_direccion, this.puntoLlegada, this.distancia)
+          .then(respuesta => {
+            // La variable precio toma el resultado del API.
+            // Será un número.
+            this.tarifa = respuesta;
+            console.log("PRECIO", this.tarifa);
+            if (this.tarifa != null) {
+              this.trf = true;
+            }
+          });
       }
     );
   }
 
   aceptarViaje() {
+    this.sendPush();
     this.navCtrl.pop();
-    this.toastCtrl
+    this.alertCtrl
       .create({
-        message: "Buscando conductor. Espere un momento por favor...",
-        duration: 3000
+        subTitle: "Buscando un Bigway cerca, espere un momento...",
+        buttons: ["Aceptar"]
       })
       .present();
+    
   }
 
   /* ================================================================ */
 
   sendPush() {
+    console.log(this.puntoLlegada);
+        console.log(this.distancia);
+        console.log(this.tarifa);
     this.restProvider
       .solicitarViaje(
         "POINT(-77.13674111970852 -12.0395974802915)",
-        "POINT(-77.13674111970852 -12.0395974802915)",
-        "40 km"
+        this.puntoLlegada,
+        this.distancia,
+        this.tarifa
       )
       .then(respuestaa => {
         console.log(respuestaa);
         this.respuesta = respuestaa;
-        console.log("ok");
-        this.e = setInterval(() => {
-          this.confirmarViaje(this.respuesta.id_servicio);
-        }, 5000);
-        console.log("n", this.respuesta.nombre_conductor);
+        this.c1();
       });
-    /* this.alertCtrl
-      .create({
-        title: "Hola"
-      })
-      .present(); */
   }
 
-  confirmarViaje(id_servicio) {
+  c1() {
+    console.log(this.respuesta.id_servicio);
+    this.e = setInterval(() => {
+      this.consultarSevicio();
+    }, 5000);
+  }
+
+  consultarSevicio() {
     this.restProvider
-      .confirmarViaje(
-        "POINT(-77.13674111970852 -12.0395974802915)",
-        "POINT(-77.13674111970852 -12.0395974802915)",
-        "40 km",
-        id_servicio
-      )
-      .then(respuesta => {
-        this.arreglo = respuesta;
-        console.log("tienes un viaje en curso", respuesta);
-        console.log("antes de matar al bucle", this.arreglo.nombre_conductor);
-        if (this.arreglo.nombre_conductor != "") {
-          console.log("matar bucle", this.respuesta.nombre_conductor);
-          clearInterval(this.e);
-          this.alertCtrl
-            .create({
-              title: "Atención",
-              subTitle:
-                "Su viaje fue aceptado por" + this.arreglo.nombre_conductor
-            })
-            .present();
-        }
-      });
+      .consultarSevicio(this.respuesta.id_servicio)
+      .subscribe(resultado => {
+        this.respPedido = resultado;
+        console.log("estado", this.respPedido['estado']);   
+        this.mostrarServicio(); 
+        this.estado = resultado['estado'];
+      })
+  }
+
+  mostrarServicio(){
+    console.log("estadomostrarServicio  ", this.estado);
+    if (this.estado == 2) {
+        
+      this.alertCtrl
+        .create({
+          title: "Bigway!",
+          subTitle:
+            "El conductor: " +
+            this.respPedido["nombre_conductor"] +
+            " está en camino.",
+          buttons: [
+            {
+              text: "Aceptar",
+              handler: () => {
+                this.confirmarConductor();
+              }
+            }
+          ]
+        })
+        .present();
+        clearInterval(this.e);
+    };
+  }
+
+  confirmarConductor() {
+    this.restProvider.confirmarConductor(this.respuesta.id_servicio);
+    this.e = setInterval(() => {
+      this.terminadoServicio();
+    }, 5000);
+  }
+
+  terminadoServicio() {
+    this.restProvider.terminadoServicio(this.respuesta.id_servicio).subscribe(resultado => {
+    console.log("terminadoServicio",resultado);
+    console.log(resultado['estado']);
+    if(resultado['estado'] == 4){
+      clearInterval(this.e);
+      this.alertCtrl
+        .create({
+          title: "Bigway!",
+          subTitle:"Su viaje ha terminado. Gracias por usar Bigway",
+          buttons: [{text: "Aceptar"}]
+          }).present();
+    }});
   }
 }

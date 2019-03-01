@@ -22,6 +22,7 @@ import { Geolocation } from "@ionic-native/geolocation";
 import { HttpClientModule } from "@angular/common/http";
 import { HttpModule } from "@angular/http";
 import { Homev1Page } from "../pages/homev1/homev1";
+import { GoogleMapsProvider } from "../providers/google-maps/google-maps";
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { Homev1Page } from "../pages/homev1/homev1";
     Network,
     RestProvider,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    GoogleMapsProvider,
     RestProvider
   ]
 })

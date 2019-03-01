@@ -1,4 +1,4 @@
-import { Homev1Page } from './../pages/homev1/homev1';
+import { Homev1Page } from "./../pages/homev1/homev1";
 import { SignInPage } from "./../pages/sign-in/sign-in";
 import { TarifaPage } from "./../pages/tarifa/tarifa";
 import { HomePage } from "./../pages/home/home";
@@ -16,7 +16,7 @@ import { HelpPage } from "../pages/help/help";
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  rootPage: any = HomePage;
+  rootPage: any = SignInPage;
 
   pages: Array<{ title: string; component: any }>;
   constructor(

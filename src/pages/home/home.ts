@@ -52,6 +52,7 @@ export class HomePage {
     this.directionsService = new google.maps.DirectionsService();
     this.marker = true;
     this.trf = false;
+    
   }
   ionViewDidEnter() {
     this.menu.enable(true);
@@ -62,138 +63,104 @@ export class HomePage {
   }
   // METODO QUE INICIA EL MAPA
   initMap() {
-    /* ARRANCA EL MAPA CON LA BUSQUEDA DE POSICION
-    INMEDIATA Y LUEGO LA MUESTRA EN PANTALLA*/
-    this.geolocation
-      .getCurrentPosition()
-      .then(resp => {
-        let pos = { lat: resp.coords.latitude, lng: resp.coords.longitude };
-        let mapOptions: google.maps.MapOptions = {
-          center: pos,
-          zoom: 16,
-          mapTypeControl: false,
-          zoomControl: false,
-          scaleControl: false,
-          fullscreenControl: false,
-          streetViewControl: false,
-          mapTypeId: google.maps.MapTypeId.ROADMAP /* INICIO DEL STYLE */,
-          styles: [
-            { elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
-            { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
-            {
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#616161" }]
-            },
-            {
-              elementType: "labels.text.stroke",
-              stylers: [{ color: "#f5f5f5" }]
-            },
-            {
-              featureType: "administrative.land_parcel",
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#bdbdbd" }]
-            },
-            {
-              featureType: "poi",
-              elementType: "geometry",
-              stylers: [{ color: "#eeeeee" }]
-            },
-            {
-              featureType: "poi",
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#757575" }]
-            },
-            {
-              featureType: "poi.park",
-              elementType: "geometry",
-              stylers: [{ color: "#e5e5e5" }]
-            },
-            {
-              featureType: "poi.park",
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#9e9e9e" }]
-            },
-            {
-              featureType: "road",
-              elementType: "geometry",
-              stylers: [{ color: "#ffffff" }]
-            },
-            {
-              featureType: "road.arterial",
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#757575" }]
-            },
-            {
-              featureType: "road.highway",
-              elementType: "geometry",
-              stylers: [{ color: "#dadada" }]
-            },
-            {
-              featureType: "road.highway",
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#616161" }]
-            },
-            {
-              featureType: "road.local",
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#9e9e9e" }]
-            },
-            {
-              featureType: "transit.line",
-              elementType: "geometry",
-              stylers: [{ color: "#e5e5e5" }]
-            },
-            {
-              featureType: "transit.station",
-              elementType: "geometry",
-              stylers: [{ color: "#eeeeee" }]
-            },
-            {
-              featureType: "water",
-              elementType: "geometry",
-              stylers: [{ color: "#c9c9c9" }]
-            },
-            {
-              featureType: "water",
-              elementType: "labels.text.fill",
-              stylers: [{ color: "#9e9e9e" }]
-            }
-          ]
-        }; /* FIN DEL STYLE */
-        this.map = new google.maps.Map(
-          this.mapElement.nativeElement,
-          mapOptions
-        );
-       /*  var icon = {
-          url: "../../assets/imgs/start.png", // url
-          scaledSize: new google.maps.Size(30, 50), // scaled size
-          origin: new google.maps.Point(0,0), // origin
-          anchor: new google.maps.Point(0, 0) // anchor
-      };
-        var marker = new google.maps.Marker({
-          position: pos,
-          map: this.map,
-          icon: icon
-        }); */
 
-        /* EFECTO DRAGEND -> ARRASTRE */
-         this.selectStart();
-        google.maps.event.addListener(this.map, "dragend", () => {
-          this.geocoder.geocode(
-            { location: this.map.getCenter() },
-            (result, status) => {
-              if (status == "OK" && result[0]) {
-                this.puntoA = result[0].formatted_address;
-                console.log("coordinada A", result[0]);
-              }
-            }
-          );
-        });
-        /* EFECTO DRAGEND */
-      })
-      .catch(err => {
-        console.error(err);
-      });
+      let mapOptions: google.maps.MapOptions = {
+        center: { lat: -12, lng: -77 },
+        zoom: 16,
+        mapTypeControl: false,
+        zoomControl: false,
+        scaleControl: false,
+        fullscreenControl: false,
+        streetViewControl: false,
+        mapTypeId: google.maps.MapTypeId.ROADMAP, 
+        /* INICIO DEL STYLE */
+        styles: [
+          { elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
+          { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+          {
+            elementType: "labels.text.fill",
+            stylers: [{ color: "#616161" }]
+          },
+          {
+            elementType: "labels.text.stroke",
+            stylers: [{ color: "#f5f5f5" }]
+          },
+          {
+            featureType: "administrative.land_parcel",
+            elementType: "labels.text.fill",
+            stylers: [{ color: "#bdbdbd" }]
+          },
+          {
+            featureType: "poi",
+            elementType: "geometry",
+            stylers: [{ color: "#eeeeee" }]
+          },
+          {
+            featureType: "poi",
+            elementType: "labels.text.fill",
+            stylers: [{ color: "#757575" }]
+          },
+          {
+            featureType: "poi.park",
+            elementType: "geometry",
+            stylers: [{ color: "#e5e5e5" }]
+          },
+          {
+            featureType: "poi.park",
+            elementType: "labels.text.fill",
+            stylers: [{ color: "#9e9e9e" }]
+          },
+          {
+            featureType: "road",
+            elementType: "geometry",
+            stylers: [{ color: "#ffffff" }]
+          },
+          {
+            featureType: "road.arterial",
+            elementType: "labels.text.fill",
+            stylers: [{ color: "#757575" }]
+          },
+          {
+            featureType: "road.highway",
+            elementType: "geometry",
+            stylers: [{ color: "#dadada" }]
+          },
+          {
+            featureType: "road.highway",
+            elementType: "labels.text.fill",
+            stylers: [{ color: "#616161" }]
+          },
+          {
+            featureType: "road.local",
+            elementType: "labels.text.fill",
+            stylers: [{ color: "#9e9e9e" }]
+          },
+          {
+            featureType: "transit.line",
+            elementType: "geometry",
+            stylers: [{ color: "#e5e5e5" }]
+          },
+          {
+            featureType: "transit.station",
+            elementType: "geometry",
+            stylers: [{ color: "#eeeeee" }]
+          },
+          {
+            featureType: "water",
+            elementType: "geometry",
+            stylers: [{ color: "#c9c9c9" }]
+          },
+          {
+            featureType: "water",
+            elementType: "labels.text.fill",
+            stylers: [{ color: "#9e9e9e" }]
+          }
+        ]
+      }; /* FIN DEL STYLE */
+      this.map = new google.maps.Map(
+        this.mapElement.nativeElement,
+        mapOptions
+      );
   }
 
   // METODO QUE ACTUALIZA LOS RESULTADOS DE BUSQUEDA
@@ -267,7 +234,7 @@ export class HomePage {
   deleteMarker() {}
 
   // METODO QUE IMPRIME LA UBICACIÓN DEL MARCADOR CENTRAL
-    selectStart() {
+  selectStart() {
     this.geocoder.geocode(
       { location: this.map.getCenter() },
       (result, status) => {
@@ -280,8 +247,7 @@ export class HomePage {
     );
   }
 
-
- /*  openTarifaPage() {
+  /*  openTarifaPage() {
     console.log("PuntoA: ", this.coordsA);
     console.log("PuntoB: ", this.coordsB);
     this.restProvider.getTarifa("ss").then(respuesta => {
@@ -294,7 +260,7 @@ export class HomePage {
   } */
 
   launchModal() {
-    const modal = this.modalCtrl.create(TarifaPage,{ data: this.puntoA });
+    const modal = this.modalCtrl.create(TarifaPage, { data: this.puntoA });
     modal.present();
   }
 }
