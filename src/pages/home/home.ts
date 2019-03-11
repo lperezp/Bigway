@@ -6,7 +6,8 @@ import {
   MenuController,
   ModalController,
   AlertController,
-  ToastController
+  ToastController,
+  NavParams
 } from "ionic-angular";
 import {} from "googlemaps";
 import { RestProvider } from "../../providers/rest/rest";
@@ -34,6 +35,9 @@ export class HomePage {
   trf: boolean;
   precio: any;
   @ViewChild("map") mapElement;
+  cliente: any;
+  lugar: any;
+  lugar1: any;
   constructor(
     public navCtrl: NavController,
     private zone: NgZone,
@@ -42,7 +46,8 @@ export class HomePage {
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
-    public restProvider: RestProvider
+    public restProvider: RestProvider,
+    public navParams: NavParams
   ) {
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     this.autocomplete = { input: "" };
@@ -52,115 +57,120 @@ export class HomePage {
     this.directionsService = new google.maps.DirectionsService();
     this.marker = true;
     this.trf = false;
-    
+    this.cliente = this.navParams.get("respuesta");
+    this.lugar = [];
+    console.log(this.cliente.cliente.direcciones.length);
+    this.lugar = this.cliente.cliente.direcciones;
+    console.log("arreglo", this.lugar);
+    /* 
+    this.lugar1 = this.cliente.cliente.direcciones[1].nombre;
+    console.log("arreglo", this.lugar1); */
   }
+
   ionViewDidEnter() {
     this.menu.enable(true);
   }
 
   ngOnInit() {
     this.initMap();
+    console.log("Go!", this.cliente);
   }
   // METODO QUE INICIA EL MAPA
   initMap() {
-
-      let mapOptions: google.maps.MapOptions = {
-        center: { lat: -12, lng: -77 },
-        zoom: 16,
-        mapTypeControl: false,
-        zoomControl: false,
-        scaleControl: false,
-        fullscreenControl: false,
-        streetViewControl: false,
-        mapTypeId: google.maps.MapTypeId.ROADMAP, 
-        /* INICIO DEL STYLE */
-        styles: [
-          { elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
-          { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
-          {
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#616161" }]
-          },
-          {
-            elementType: "labels.text.stroke",
-            stylers: [{ color: "#f5f5f5" }]
-          },
-          {
-            featureType: "administrative.land_parcel",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#bdbdbd" }]
-          },
-          {
-            featureType: "poi",
-            elementType: "geometry",
-            stylers: [{ color: "#eeeeee" }]
-          },
-          {
-            featureType: "poi",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#757575" }]
-          },
-          {
-            featureType: "poi.park",
-            elementType: "geometry",
-            stylers: [{ color: "#e5e5e5" }]
-          },
-          {
-            featureType: "poi.park",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#9e9e9e" }]
-          },
-          {
-            featureType: "road",
-            elementType: "geometry",
-            stylers: [{ color: "#ffffff" }]
-          },
-          {
-            featureType: "road.arterial",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#757575" }]
-          },
-          {
-            featureType: "road.highway",
-            elementType: "geometry",
-            stylers: [{ color: "#dadada" }]
-          },
-          {
-            featureType: "road.highway",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#616161" }]
-          },
-          {
-            featureType: "road.local",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#9e9e9e" }]
-          },
-          {
-            featureType: "transit.line",
-            elementType: "geometry",
-            stylers: [{ color: "#e5e5e5" }]
-          },
-          {
-            featureType: "transit.station",
-            elementType: "geometry",
-            stylers: [{ color: "#eeeeee" }]
-          },
-          {
-            featureType: "water",
-            elementType: "geometry",
-            stylers: [{ color: "#c9c9c9" }]
-          },
-          {
-            featureType: "water",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#9e9e9e" }]
-          }
-        ]
-      }; /* FIN DEL STYLE */
-      this.map = new google.maps.Map(
-        this.mapElement.nativeElement,
-        mapOptions
-      );
+    let mapOptions: google.maps.MapOptions = {
+      center: { lat: -12, lng: -77 },
+      zoom: 16,
+      mapTypeControl: false,
+      zoomControl: false,
+      scaleControl: false,
+      fullscreenControl: false,
+      streetViewControl: false,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      /* INICIO DEL STYLE */
+      styles: [
+        { elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
+        { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+        {
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#616161" }]
+        },
+        {
+          elementType: "labels.text.stroke",
+          stylers: [{ color: "#f5f5f5" }]
+        },
+        {
+          featureType: "administrative.land_parcel",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#bdbdbd" }]
+        },
+        {
+          featureType: "poi",
+          elementType: "geometry",
+          stylers: [{ color: "#eeeeee" }]
+        },
+        {
+          featureType: "poi",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#757575" }]
+        },
+        {
+          featureType: "poi.park",
+          elementType: "geometry",
+          stylers: [{ color: "#e5e5e5" }]
+        },
+        {
+          featureType: "poi.park",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#9e9e9e" }]
+        },
+        {
+          featureType: "road",
+          elementType: "geometry",
+          stylers: [{ color: "#ffffff" }]
+        },
+        {
+          featureType: "road.arterial",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#757575" }]
+        },
+        {
+          featureType: "road.highway",
+          elementType: "geometry",
+          stylers: [{ color: "#dadada" }]
+        },
+        {
+          featureType: "road.highway",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#616161" }]
+        },
+        {
+          featureType: "road.local",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#9e9e9e" }]
+        },
+        {
+          featureType: "transit.line",
+          elementType: "geometry",
+          stylers: [{ color: "#e5e5e5" }]
+        },
+        {
+          featureType: "transit.station",
+          elementType: "geometry",
+          stylers: [{ color: "#eeeeee" }]
+        },
+        {
+          featureType: "water",
+          elementType: "geometry",
+          stylers: [{ color: "#c9c9c9" }]
+        },
+        {
+          featureType: "water",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#9e9e9e" }]
+        }
+      ]
+    }; /* FIN DEL STYLE */
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
   }
 
   // METODO QUE ACTUALIZA LOS RESULTADOS DE BUSQUEDA
@@ -260,7 +270,10 @@ export class HomePage {
   } */
 
   launchModal() {
-    const modal = this.modalCtrl.create(TarifaPage, { data: this.puntoA });
+    const modal = this.modalCtrl.create(TarifaPage, {
+      data: this.puntoA,
+      lugar: this.lugar
+    });
     modal.present();
   }
 }

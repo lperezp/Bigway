@@ -72,7 +72,7 @@ export class SignInPage {
       console.log("VARIABLES DEL SERVIDOR", _clave);
       console.log("VARIABLES DEL SERVIDOR", _correo);*/
       if (_correo === this.user["correo"]) {
-        this.navCtrl.push(HomePage);
+        this.navCtrl.push(HomePage,{respuesta});
         console.log("Bienvenido!");
       } else {
         console.log("Usuario incorrecto.");
