@@ -7,7 +7,8 @@ import {
   AlertController,
   MenuController,
   ModalController,
-  NavParams
+  NavParams,
+  LoadingController
 } from "ionic-angular";
 import { RestProvider } from "../../providers/rest/rest";
 
@@ -57,6 +58,7 @@ export class TarifaPage {
   lugares: any;
   puntoGPS: any;
   focus: any;
+  loading: any;
   constructor(
     public navCtrl: NavController,
     private zone: NgZone,
@@ -65,7 +67,8 @@ export class TarifaPage {
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
     public restProvider: RestProvider,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public loadingCtrl: LoadingController
   ) {
     this.lugares = navParams.get("lugar");
     this.puntoGPS = navParams.get("puntoGPS");
@@ -86,6 +89,18 @@ export class TarifaPage {
   ngOnInit() {
     console.log(this.lugar);
     this.id_direccion = 0;
+  }
+
+  showLoading(message) {
+    this.loading = this.loadingCtrl.create({
+      content: message
+    });
+
+    this.loading.present();
+
+    /* setTimeout(() => {
+      loading.dismiss();
+    }, 5000); */
   }
 
   elegirZona(i) {
@@ -346,13 +361,8 @@ export class TarifaPage {
 
   aceptarViaje() {
     this.sendPush();
-    this.navCtrl.pop();
-    this.alertCtrl
-      .create({
-        subTitle: "Buscando un Bigway cerca, espere un momento..."
-        /* buttons: ["Aceptar"] */
-      })
-      .present();
+
+    this.showLoading("Buscando un Bigway cerca, espere un momento...");
   }
 
   /* ================================================================ */
@@ -396,7 +406,7 @@ export class TarifaPage {
   mostrarServicio() {
     console.log("estadomostrarServicio  ", this.estado);
     if (this.estado == 2) {
-     /*  this.alertCtrl
+      /*  this.alertCtrl
         .create({
           title: "Bigway!",
           subTitle:
@@ -405,15 +415,17 @@ export class TarifaPage {
             " está en camino.",
           buttons: [
             { */
-              /*  text: "Aceptar",
+      /*  text: "Aceptar",
               handler: () => {
                 this.confirmarConductor();
               } */
-           /*  }
+      /*  }
           ]
         })
         .present(); */
       clearInterval(this.e);
+      this.navCtrl.pop();
+      this.loading.dismiss();
       let modal = this.modalCtrl.create(TrxPage, {
         conductor: this.respPedido["nombre_conductor"],
         tarifa: this.tarifa,
