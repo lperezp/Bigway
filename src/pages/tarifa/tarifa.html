@@ -2,46 +2,43 @@
   <ion-grid class="form">
     <ion-row>
       <ion-col>
-        <ion-item class="sinPadding">
-          <!-- <ion-input
-            type="text"
-            placeholder="¿A donde quieres ir?"
-            [(ngModel)]="puntoA"
-          ></ion-input> -->
-          <!-- [(ngModel)]="autocompleteOrigen.input"  -->
+        <ion-item class="sinPadding input-form" [hidden]="focus">
+          <ion-input type="text" [(ngModel)]="puntoGPS"></ion-input>
+          <ion-icon name="pin" item-right color="primary"></ion-icon>
+        </ion-item>
+        <ion-item class="sinPadding" [hidden]="!focus">
           <ion-searchbar
-            [(ngModel)]="puntoA"
+            [(ngModel)]="autocompleteOrigen.input"
             (ionInput)="updateSearchResultsOrigen()"
             placeholder="Origen"
-            class="sinPadding"
-            id="ee"
+            class="sinPadding input-form"
           ></ion-searchbar>
-          <ion-list>
-            <!--(click)="puntoA='Av. La Floresta 497 - San Borja'" [hidden]="autocompleteItemsOrigen.length > 0"-->
-            <ion-item
-              *ngFor="let item of lugar; index as i"
-              (click)="elegirZona(i)"
-            >
-              <ion-icon name="heart"></ion-icon>
-              {{ lugar[i].nombre }}
-            </ion-item>
+          <ion-list [hidden]="autocompleteItemsOrigen.length == 0">
             <ion-item
               *ngFor="let itemOrigen of autocompleteItemsOrigen"
               tappable
               (click)="selectOrigenResult(itemOrigen)"
             >
-              <ion-icon name="pin"></ion-icon>
               {{ itemOrigen.description }}
             </ion-item>
           </ion-list>
         </ion-item>
+        <ion-item class="sinPadding" *ngIf="focus">
+          <ion-list *ngFor="let lugar of lugares">
+            <ion-item>
+              <ion-icon name="heart" color="primary"></ion-icon>
+              {{ lugar.nombre }}
+            </ion-item>
+          </ion-list>
+        </ion-item>
+
         <!-- DIVISION-->
         <ion-item class="sinPadding">
           <ion-searchbar
             [(ngModel)]="autocompleteDestino.input"
             (ionInput)="updateSearchResultsDestino()"
             placeholder="Destino"
-            class="sinPadding"
+            class="sinPadding input-form"
           ></ion-searchbar>
           <ion-list [hidden]="autocompleteItemsDestino.length == 0">
             <ion-item

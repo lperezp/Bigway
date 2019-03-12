@@ -1,3 +1,5 @@
+import { TrxPage } from "./../pages/trx/trx";
+import { OperacionPage } from "./../pages/operacion/operacion";
 import { Network } from "@ionic-native/network";
 import { TarifaPage } from "./../pages/tarifa/tarifa";
 import { RestProvider } from "./../providers/rest/rest";
@@ -23,6 +25,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { HttpModule } from "@angular/http";
 import { Homev1Page } from "../pages/homev1/homev1";
 import { GoogleMapsProvider } from "../providers/google-maps/google-maps";
+import { MapaPage } from "../pages/mapa/mapa";
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import { GoogleMapsProvider } from "../providers/google-maps/google-maps";
     SelectedTravelPage,
     TravelPage,
     TarifaPage,
-    Homev1Page
+    Homev1Page,
+    MapaPage,
+    OperacionPage,
+    TrxPage
   ],
   imports: [
     BrowserModule,
@@ -63,7 +69,10 @@ import { GoogleMapsProvider } from "../providers/google-maps/google-maps";
     SelectedTravelPage,
     TravelPage,
     TarifaPage,
-    Homev1Page
+    Homev1Page,
+    MapaPage,
+    OperacionPage,
+    TrxPage
   ],
   providers: [
     StatusBar,

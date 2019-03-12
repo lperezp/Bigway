@@ -54,7 +54,7 @@ export class Homev1Page {
     this.directionsService = new google.maps.DirectionsService();
     this.marker = true;
     this.trf = false;
-    this.navParams.get('puntoA');
+    this.navParams.get("puntoA");
   }
   ionViewDidEnter() {
     this.menu.enable(true);
@@ -170,9 +170,9 @@ export class Homev1Page {
         var icon = {
           url: "../../assets/imgs/start.png", // url
           scaledSize: new google.maps.Size(30, 50), // scaled size
-          origin: new google.maps.Point(0,0), // origin
+          origin: new google.maps.Point(0, 0), // origin
           anchor: new google.maps.Point(0, 0) // anchor
-      };
+        };
         var marker = new google.maps.Marker({
           position: pos,
           map: this.map,
@@ -180,7 +180,7 @@ export class Homev1Page {
         });
 
         /* EFECTO DRAGEND -> ARRASTRE */
-         this.selectStart();
+        this.selectStart();
         /* google.maps.event.addListener(this.map, "dragend", () => {
           this.geocoder.geocode(
             { location: this.map.getCenter() },
@@ -270,7 +270,7 @@ export class Homev1Page {
   deleteMarker() {}
 
   // METODO QUE IMPRIME LA UBICACIÓN DEL MARCADOR CENTRAL
-    selectStart() {
+  selectStart() {
     this.geocoder.geocode(
       { location: this.map.getCenter() },
       (result, status) => {
@@ -283,8 +283,7 @@ export class Homev1Page {
     );
   }
 
-
-/*   openTarifaPage() {
+  /*   openTarifaPage() {
     console.log("PuntoA: ", this.coordsA);
     console.log("PuntoB: ", this.coordsB);
     this.restProvider.getTarifa("ss").then(respuesta => {

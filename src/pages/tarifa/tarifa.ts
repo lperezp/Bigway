@@ -1,3 +1,4 @@
+import { TrxPage } from "./../trx/trx";
 import { Component, NgZone } from "@angular/core";
 import {
   IonicPage,
@@ -53,6 +54,9 @@ export class TarifaPage {
   respPedido: Response;
   public estado: any = 1;
   lugar: any;
+  lugares: any;
+  puntoGPS: any;
+  focus: any;
   constructor(
     public navCtrl: NavController,
     private zone: NgZone,
@@ -63,6 +67,9 @@ export class TarifaPage {
     public restProvider: RestProvider,
     public navParams: NavParams
   ) {
+    this.lugares = navParams.get("lugar");
+    this.puntoGPS = navParams.get("puntoGPS");
+    this.focus = navParams.get("focus");
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     this.autocompleteOrigen = { input: "" };
     this.autocompleteItemsOrigen = [];
@@ -146,6 +153,39 @@ export class TarifaPage {
             this.autocompleteItemsDestino.push(prediction);
           });
         });
+      }
+    );
+  }
+
+  // METODO QUE SE REALIZA AL SELECCIONAR UN LUGAR
+  selectDestinoResult(itemDestino) {
+    this.autocompleteItemsDestino = [];
+    this.geocoder.geocode(
+      { placeId: itemDestino.place_id },
+      (results, status) => {
+        if (status === "OK" && results[0]) {
+          console.log("location", results[0].formatted_address);
+          this.puntoB = results[0].formatted_address;
+          console.log("PuntoB_lat", results[0].geometry.viewport.ma.j);
+          console.log("PuntoB_lng", results[0].geometry.viewport.ga.l);
+          this.puntoLlegada =
+            "POINT(" +
+            results[0].geometry.viewport.ga.l +
+            " " +
+            results[0].geometry.viewport.ma.j +
+            ")";
+          console.log(this.puntoLlegada);
+          this.initMap();
+          this.calcularRuta(results[0].formatted_address);
+          /*           this.id_direccion = 0; */
+          this.calcularTarifa();
+          //completar el input según tu búsqueda
+          this.autocompleteDestino.input = itemDestino.description;
+
+          // LLAMAR AL METODO QUE CALCULE LA TARIFA
+        } else {
+          console.log("Error al ubicar el destino.");
+        }
       }
     );
   }
@@ -244,41 +284,9 @@ export class TarifaPage {
       ]
     });
   }
-  // METODO QUE SE REALIZA AL SELECCIONAR UN LUGAR
-  selectDestinoResult(itemDestino) {
-    this.autocompleteItemsDestino = [];
-    this.geocoder.geocode(
-      { placeId: itemDestino.place_id },
-      (results, status) => {
-        if (status === "OK" && results[0]) {
-          console.log("location", results[0].formatted_address);
-          this.puntoB = results[0].formatted_address;
-          console.log("PuntoB_lat", results[0].geometry.viewport.ma.j);
-          console.log("PuntoB_lng", results[0].geometry.viewport.ga.l);
-          this.puntoLlegada =
-            "POINT(" +
-            results[0].geometry.viewport.ga.l +
-            " " +
-            results[0].geometry.viewport.ma.j +
-            ")";
-          console.log(this.puntoLlegada);
-          this.initMap();
-          this.calcularRuta(results[0].formatted_address);
-          /*           this.id_direccion = 0; */
-          this.calcularTarifa();
-          //completar el input según tu búsqueda
-          this.autocompleteDestino.input = itemDestino.description;
-
-          // LLAMAR AL METODO QUE CALCULE LA TARIFA
-        } else {
-          console.log("Error al ubicar el destino.");
-        }
-      }
-    );
-  }
-
   // METODO QUE PINTA LA RUTA DEL PUNTO A AL PUNTO B
   calcularRuta(destino: any) {
+    this.puntoA = this.puntoGPS;
     let request = {
       origin: this.puntoA,
       destination: destino,
@@ -341,8 +349,8 @@ export class TarifaPage {
     this.navCtrl.pop();
     this.alertCtrl
       .create({
-        subTitle: "Buscando un Bigway cerca, espere un momento...",
-        buttons: ["Aceptar"]
+        subTitle: "Buscando un Bigway cerca, espere un momento..."
+        /* buttons: ["Aceptar"] */
       })
       .present();
   }
@@ -388,7 +396,7 @@ export class TarifaPage {
   mostrarServicio() {
     console.log("estadomostrarServicio  ", this.estado);
     if (this.estado == 2) {
-      this.alertCtrl
+     /*  this.alertCtrl
         .create({
           title: "Bigway!",
           subTitle:
@@ -396,16 +404,23 @@ export class TarifaPage {
             this.respPedido["nombre_conductor"] +
             " está en camino.",
           buttons: [
-            {
-              text: "Aceptar",
+            { */
+              /*  text: "Aceptar",
               handler: () => {
                 this.confirmarConductor();
-              }
-            }
+              } */
+           /*  }
           ]
         })
-        .present();
+        .present(); */
       clearInterval(this.e);
+      let modal = this.modalCtrl.create(TrxPage, {
+        conductor: this.respPedido["nombre_conductor"],
+        tarifa: this.tarifa,
+        distancia: this.distancia,
+        id_servicio: this.respuesta.id_servicio
+      });
+      modal.present();
     }
   }
 

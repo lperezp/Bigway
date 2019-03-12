@@ -1,0 +1,31 @@
+<ion-content padding>
+  <ion-card>
+    <ion-card-header>
+      <p
+        style="font-size: 16px;
+    text-align: center;"
+      >
+        Un conductor va en camino
+      </p>
+    </ion-card-header>
+
+    <ion-card-content>
+      <img src="../../assets/imgs/auto.png" class="img" />
+      <div style="text-align: center; margin-top:2em">
+        <h3 style="font-size: 16px"><b>Conductor:</b> {{ conductor }}</h3>
+        <h3 style="font-size: 16px"><b>Distancia:</b> {{ distancia }}</h3>
+        <h3 style="font-size: 16px"><b>Tarifa:</b> S/.{{ tarifa }}</h3>
+        <h3 style="font-size: 16px"><b>Placa:</b> ABC- 456</h3>
+      </div>
+      <button
+        ion-button
+        class="fullWidth btn"
+        (click)="confirmarConductor()"
+        id="boton"
+        [hidden]="confirmado" 
+      >
+        Aceptar
+      </button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

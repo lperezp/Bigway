@@ -1,3 +1,4 @@
+import { MapaPage } from "./../mapa/mapa";
 import { RestProvider } from "./../../providers/rest/rest";
 import { HomePage } from "./../home/home";
 import { Component } from "@angular/core";
@@ -72,7 +73,7 @@ export class SignInPage {
       console.log("VARIABLES DEL SERVIDOR", _clave);
       console.log("VARIABLES DEL SERVIDOR", _correo);*/
       if (_correo === this.user["correo"]) {
-        this.navCtrl.push(HomePage,{respuesta});
+        this.navCtrl.push(HomePage, { respuesta });
         console.log("Bienvenido!");
       } else {
         console.log("Usuario incorrecto.");

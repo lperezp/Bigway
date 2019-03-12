@@ -1,0 +1,40 @@
+<ion-content padding>
+  <ion-grid class="form bg-white">
+    <ion-row>
+      <ion-col>
+        <ion-item class="sinPadding input-form">
+          <ion-input type="text" [(ngModel)]="puntoGPS"></ion-input>
+          <ion-icon name="pin" item-right color="primary"></ion-icon>
+        </ion-item>
+        <ion-item class="sinPadding input-form">
+          <ion-searchbar
+            [(ngModel)]="autocompleteDestino.input"
+            (ionInput)="updateSearchResultsDestino()"
+            placeholder="Destino"
+            class="sinPadding"
+          ></ion-searchbar>
+          <ion-list [hidden]="autocompleteItemsDestino.length == 0">
+            <ion-item
+              *ngFor="let itemDestino of autocompleteItemsDestino"
+              tappable
+              (click)="selectDestinoResult(itemDestino)"
+            >
+              {{ itemDestino.description }}
+            </ion-item>
+          </ion-list>
+        </ion-item>
+        <ion-item class="sinPadding" *ngIf="focus">
+          <ion-list *ngFor="let lugar of lugares">
+            <ion-item
+              ><ion-icon name="heart" color="primary"></ion-icon>
+              {{ lugar.nombre }}</ion-item
+            >
+          </ion-list>
+        </ion-item>
+        <button ion-button class="btn fullWidth" (click)="openOperacion()">
+          SOLICITAR UN BIGWAY
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

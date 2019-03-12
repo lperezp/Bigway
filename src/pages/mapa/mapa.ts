@@ -1,4 +1,4 @@
-import { TarifaPage } from "./../tarifa/tarifa";
+import { OperacionPage } from "./../operacion/operacion";
 import { Component, ViewChild } from "@angular/core";
 import {
   IonicPage,
@@ -10,11 +10,19 @@ import {
 import {} from "googlemaps";
 import { Geolocation } from "@ionic-native/geolocation";
 
+/**
+ * Generated class for the MapaPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
+@IonicPage()
 @Component({
-  selector: "page-home",
-  templateUrl: "home.html"
+  selector: "page-mapa",
+  templateUrl: "mapa.html"
 })
-export class HomePage {
+export class MapaPage {
   google: any;
   public map: any;
   @ViewChild("map") mapElement;
@@ -293,7 +301,7 @@ export class HomePage {
   }
 
   openOperacion() {
-    let modal = this.modalCtrl.create(TarifaPage, {
+    let modal = this.modalCtrl.create(OperacionPage, {
       lugar: this.lugar,
       puntoGPS: this.puntoGPS,
       focus: this.focus
